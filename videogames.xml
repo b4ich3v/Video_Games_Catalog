@@ -1,1 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE videogameCatalog [
+    <!ENTITY img_botw "images/botw.jpg">
+    <!ENTITY img_witcher3 "images/witcher3.jpg">
+    <!ENTITY img_minecraft "images/minecraft.jpg">
+    <!ENTITY img_overwatch "images/overwatch.jpg">
+    <!ENTITY img_mario_odyssey "images/mario_odyssey.jpg">
+    <!ENTITY img_god_of_war "images/god_of_war.jpg">
+    <!ENTITY img_fortnite "images/fortnite.jpg">
+    <!ENTITY img_hollow_knight "images/hollow_knight.jpg">
+]>
+<videogameCatalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:noNamespaceSchemaLocation="videogames.xsd">
+
+    <genres>
+        <genre id="g_action">Екшън</genre>
+        <genre id="g_rpg">RPG</genre>
+        <genre id="g_action_adventure">Екшън-приключение</genre>
+        <genre id="g_shooter">Шутър</genre>
+        <genre id="g_platformer">Платформър</genre>
+        <genre id="g_battle_royale">Battle Royale</genre>
+        <genre id="g_metroidvania">Metroidvania</genre>
+        <genre id="g_sandbox">Пясъчник</genre>
+    </genres>
+
+    <companies>
+        <company id="c_nintendo">
+            <name>Nintendo</name>
+            <country>Япония</country>
+            <publishedGames>
+                <publishedGame titleRef="The Legend of Zelda: Breath of the Wild" companyIdRef="c_nintendo"/>
+                <publishedGame titleRef="Super Mario Odyssey" companyIdRef="c_nintendo"/>
+            </publishedGames>
+        </company>
+        <company id="c_cdpr">
+            <name>CD Projekt RED</name>
+            <country>Полша</country>
+            <publishedGames>
+                <publishedGame titleRef="The Witcher 3: Wild Hunt" companyIdRef="c_cdpr"/>
+            </publishedGames>
+        </company>
+        <company id="c_mojang">
+            <name>Mojang Studios</name>
+            <country>Швеция</country>
+            <publishedGames>
+                <publishedGame titleRef="Minecraft" companyIdRef="c_mojang"/>
+            </publishedGames>
+        </company>
+        <company id="c_blizzard">
+            <name>Blizzard Entertainment</name>
+            <country>САЩ</country>
+            <publishedGames>
+                <publishedGame titleRef="Overwatch" companyIdRef="c_blizzard"/>
+            </publishedGames>
+        </company>
+        <company id="c_sony_sms">
+            <name>Santa Monica Studio</name>
+            <country>САЩ</country>
+            <publishedGames>
+                <publishedGame titleRef="God of War (2018)" companyIdRef="c_sony_sms"/>
+            </publishedGames>
+        </company>
+        <company id="c_epic">
+            <name>Epic Games</name>
+            <country>САЩ</country>
+            <publishedGames>
+                <publishedGame titleRef="Fortnite" companyIdRef="c_epic"/>
+            </publishedGames>
+        </company>
+        <company id="c_team_cherry">
+            <name>Team Cherry</name>
+            <country>Австралия</country>
+            <publishedGames>
+                <publishedGame titleRef="Hollow Knight" companyIdRef="c_team_cherry"/>
+            </publishedGames>
+        </company>
+    </companies>
+
+    <platforms>
+        <platform id="p_pc">PC</platform>
+        <platform id="p_ps4">PlayStation 4</platform>
+        <platform id="p_ps5">PlayStation 5</platform>
+        <platform id="p_xbox">Xbox One / Series</platform>
+        <platform id="p_switch">Nintendo Switch</platform>
+    </platforms>
+
+    <games>
+        <game id="game1">
+            <title>The Legend of Zelda: Breath of the Wild</title>
+            <genreId>g_action_adventure</genreId>
+            <companyId>c_nintendo</companyId>
+            <platformId>p_switch</platformId>
+            <releaseYear>2017</releaseYear>
+            <ageRating>12+</ageRating>
+            <multiplayer>false</multiplayer>
+            <price currency="EUR">59.99</price>
+            <image>&img_botw;</image>
+            <description>Отворен свят с изследване, пъзели и динамични битки.</description>
+        </game>
+
+        <game id="game2">
+            <title>The Witcher 3: Wild Hunt</title>
+            <genreId>g_rpg</genreId>
+            <companyId>c_cdpr</companyId>
+            <platformId>p_pc</platformId>
+            <platformId>p_ps4</platformId>
+            <platformId>p_xbox</platformId>
+            <releaseYear>2015</releaseYear>
+            <ageRating>18+</ageRating>
+            <multiplayer>false</multiplayer>
+            <price currency="EUR">39.99</price>
+            <image>&img_witcher3;</image>
+            <description>Фентъзи RPG с дълбока история и множество странични задачи.</description>
+        </game>
+
+        <game id="game3">
+            <title>Minecraft</title>
+            <genreId>g_sandbox</genreId>
+            <companyId>c_mojang</companyId>
+            <platformId>p_pc</platformId>
+            <platformId>p_ps4</platformId>
+            <platformId>p_xbox</platformId>
+            <platformId>p_switch</platformId>
+            <releaseYear>2011</releaseYear>
+            <ageRating>7+</ageRating>
+            <multiplayer>true</multiplayer>
+            <price currency="EUR">26.95</price>
+            <image>&img_minecraft;</image>
+            <description>Блоков свят за строене, оцеляване и творчество.</description>
+        </game>
+
+        <game id="game4">
+            <title>Overwatch</title>
+            <genreId>g_shooter</genreId>
+            <companyId>c_blizzard</companyId>
+            <platformId>p_pc</platformId>
+            <platformId>p_ps4</platformId>
+            <platformId>p_xbox</platformId>
+            <releaseYear>2016</releaseYear>
+            <ageRating>12+</ageRating>
+            <multiplayer>true</multiplayer>
+            <price currency="EUR">39.99</price>
+            <image>&img_overwatch;</image>
+            <description>Отборен геройски шутър с различни роли и карти.</description>
+        </game>
+
+        <game id="game5">
+            <title>Super Mario Odyssey</title>
+            <genreId>g_platformer</genreId>
+            <companyId>c_nintendo</companyId>
+            <platformId>p_switch</platformId>
+            <releaseYear>2017</releaseYear>
+            <ageRating>7+</ageRating>
+            <multiplayer>true</multiplayer>
+            <price currency="EUR">59.99</price>
+            <image>&img_mario_odyssey;</image>
+            <description>Цветно 3D приключение с много светове и тайни.</description>
+        </game>
+
+        <game id="game6">
+            <title>God of War (2018)</title>
+            <genreId>g_action_adventure</genreId>
+            <companyId>c_sony_sms</companyId>
+            <platformId>p_ps4</platformId>
+            <releaseYear>2018</releaseYear>
+            <ageRating>18+</ageRating>
+            <multiplayer>false</multiplayer>
+            <price currency="EUR">49.99</price>
+            <image>&img_god_of_war;</image>
+            <description>Митологично приключение с фокус върху история и бой.</description>
+        </game>
+
+        <game id="game7">
+            <title>Fortnite</title>
+            <genreId>g_battle_royale</genreId>
+            <companyId>c_epic</companyId>
+            <platformId>p_pc</platformId>
+            <platformId>p_ps4</platformId>
+            <platformId>p_xbox</platformId>
+            <platformId>p_switch</platformId>
+            <releaseYear>2017</releaseYear>
+            <ageRating>12+</ageRating>
+            <multiplayer>true</multiplayer>
+            <price currency="EUR">0.00</price>
+            <image>&img_fortnite;</image>
+            <description>Онлайн battle royale с изграждане и сезонни събития.</description>
+        </game>
+
+        <game id="game8">
+            <title>Hollow Knight</title>
+            <genreId>g_metroidvania</genreId>
+            <companyId>c_team_cherry</companyId>
+            <platformId>p_pc</platformId>
+            <platformId>p_switch</platformId>
+            <platformId>p_ps4</platformId>
+            <releaseYear>2017</releaseYear>
+            <ageRating>12+</ageRating>
+            <multiplayer>false</multiplayer>
+            <price currency="EUR">14.99</price>
+            <image>&img_hollow_knight;</image>
+            <description>Атмосферен 2D Metroidvania с предизвикателни битки.</description>
+        </game>
+    </games>
+</videogameCatalog>
 
