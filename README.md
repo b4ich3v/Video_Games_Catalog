@@ -1,163 +1,83 @@
-# Курсов проект: Каталог на видеоигри за развлечение – 2 (Тема 39)
 
-**Студенти:** Ивайло Кънчев (`2MI0600305`), Йоан Байчев (`0MI0600328`)  
-**Дата:** 25 ноември 2025 г.
+# Course Project: Video Game Entertainment Catalog – 2 (Topic 39)
 
-## 1. Увод
+**Students:** Ivaylo Kanchev (`2MI0600305`), Yoan Baychev (`0MI0600328`)  
+**Date:** 25 November 2025
 
-Настоящият документ описва разработката на курсов проект по XML технологии.  
-Задачата е **да се създаде каталог на видеоигри за развлечение**, като
-съдържанието се структурира в XML документ, валидиран чрез XML Schema.
-Каталогът трябва да представя текстовата и графичната информация за
-игрите, като изображенията се свързват чрез неразрешени ентитети.
-Данните трябва да се визуализират в браузер със CSS и XSLT, като са
-добавени JavaScript функционалности за филтриране и сортиране.  
+## 1. Introduction
 
-За базовата реализация беше необходимо да се опишат **7 – 8 игри** от
-разнообразни жанрове, с посочване на разработчици, издатели,
-платформи и дати на издаване【61165999571456†L92-L93】.  
-Допълнително проектът развива изискванията за интерактивност, като
-позволява търсене по заглавие и филтриране по жанр.
+This document describes the development of a course project in XML technologies.  
+The assignment is to **create a video game entertainment catalog**, where the
+content is structured in an XML document validated through an XML Schema.
+The catalog presents textual and graphical information about the games, with
+images linked through unparsed XML entities. The data is visualized in a web
+browser using CSS and XSLT, enhanced with JavaScript features for filtering and
+sorting.
 
-## 2. Анализ на задачата
+For the base implementation, we were required to describe **7–8 games**
+from different genres, specifying developers, publishers, platforms, and release
+dates.  
+Additionally, the project expands the requirements by implementing an interactive
+catalog that supports search by title and filtering by genre.
 
-### 2.1 Избор на игри и източници
+## 2. Task Analysis
 
-За изпълнение на условието избрахме осем популярни видеоигри от
-различни години, жанрове и платформи.  Използвахме официални
-страници и утвърдени енциклопедии, за да съберем надеждна информация за
-разработчиците, издателите, датите на издаване и платформите.  
-Няколко примера:
+### 2.1 Selection of Games and Sources
 
-* **The Legend of Zelda: Tears of the Kingdom** – продължение на
-  Breath of the Wild, разработено от *Nintendo EPD* и *Monolith Soft*
-  за Nintendo Switch, излязло на 12 май 2023 г. и публикувано от
-  Nintendo【668173338624498†L225-L260】.
-* **Elden Ring** – екшън ролева игра от *FromSoftware*, издадена
-  на 25 февруари 2022 г. (PS5/PS4, Xbox Series X|S, Xbox One,
-  Windows) като издател извън Япония е *Bandai Namco Entertainment*
-  【858416695712795†L116-L153】.
-* **DOOM Eternal** – продължение на DOOM (2016), разработено от
-  *id Software* и публикувано от *Bethesda Softworks*; играта излиза
-  първо на 20 март 2020 г. за Windows, Xbox One, PS4 и Stadia, а
-  по‑късно за Nintendo Switch и системите от следващо поколение
-  【345590806197211†L192-L247】.
-* **Minecraft** – пясъчна игра със сървайвъл елементи на *Mojang
-  Studios*; официалната версия излиза на 18 ноември 2011 г. и е
-  най‑продаваната игра в историята【777400238768303†L296-L432】.
-* **Tetris** – класически пъзел, създаден от Алексей Пажитнов и
-  програмиран за MS‑DOS от Вадим Герасимов; дебютира през 1984 г. и се
-  разпространява на множество платформи【397473246799368†L134-L152】.
-* **The Witcher 3: Wild Hunt** – приключенска ролева игра от
-  *CD Projekt RED*, пусната на 19 май 2015 г. (PC, PS4, Xbox One) и
-  по‑късно за Nintendo Switch и системи от следващо поколение【501590420045290†L355-L402】.
-* **Super Mario Odyssey** – триизмерен платформър за Nintendo Switch,
-  разработен от *Nintendo EPD Tokyo* и *1‑Up Studio*, издаден
-  през октомври 2017 г., с последващи версии за други региони【30768275475321†L17-L31】【30768275475321†L53-L107】.
-* **Baldur’s Gate 3** – ролева игра от *Larian Studios*, издадена
-  през август 2023 г. за Windows и по‑късно за PS5, macOS, Xbox Series
-  X|S, като е планирана версия и за Linux【167625458483725†L173-L214】.
+We selected eight popular video games spanning different years, genres, and
+platforms. Information was collected from official websites and reputable
+encyclopedias to gather accurate details about developers, publishers, release
+dates, and platforms.
 
-### 2.2 Връзки и ограничения
+### 2.2 Relationships and Constraints
 
-Каталогът изисква да се определят връзки между жанровете, компаниите и
-игрите чрез композитни ключове и референции.  В анализа извлякохме
-следните зависимости:
+The catalog defines relationships between genres, companies, and games using
+composite keys and references. Each game belongs to a genre, and companies
+(developers/publishers) are referenced through a two-attribute key system.
+Images are connected via unparsed XML entities, resolved with
+`unparsed-entity-uri()` in XSLT.
 
-* **Жанр → игра** – всяка игра принадлежи към един жанр, дефиниран
-  от `genre/@id`.  За да се гарантира валидност, е дефиниран ключ
-  `genreKey` в XML Schema, а `game/@genreId` е `IDREF` към този ключ.
+### 2.3 Enhancements for Higher Grade
 
-* **Фирма (име, роля) → игра** – разработчиците и издателите
-  са представени в елементите `company`, които имат композитен ключ
-  `(name, role)`.  Във всяка игра има поделемент `companyRef`
-  със същите два атрибута; `keyref` гарантира, че всяка референция
-  съществува в списъка с фирми.
+To meet the requirements for a higher grade, we implemented:
 
-* **Изображения** – за всяка игра е обявен неразрешен ентитет (например
-  `&amp;totk;`), сочещ към файл в поддиректория `images`.  При
-  визуализацията XSLT използва функцията
-  `unparsed-entity-uri()` за извличане на пътя към съответното
-  изображение.
+- **Search functionality** – dynamic filtering by title  
+- **Genre filter** – dropdown selector  
+- **Column sorting** – JavaScript sorting for all fields  
 
-### 2.3 Условия за добра оценка и разширения
+These features turn the catalog into an interactive web application.
 
-За да се покрие изискването за по‑висока оценка, решихме да
-реализираме динамичен каталог с JavaScript.  Това включва:
+## 3. Design and Implementation
 
-* **Търсене** – въвеждане на част от заглавие филтрира таблицата в
-  реално време.
-* **Филтър по жанр** – падащо меню позволява избор на конкретен жанр или
-  разглеждане на всички игри.
-* **Сортиране** – кликане върху заглавието на колоната сортира
-  таблицата по съответното поле (възходящ/низходящ ред).  Датите се
-  интерпретират като реални дата‑обекти.
+### 3.1 XML Structure
 
-Тези функции надграждат базовата задача, като превръщат статичния
-каталог в интерактивен уеб интерфейс.
+The XML document contains three major collections:
 
-## 3. Проектиране и имплементация
-
-### 3.1 Структура на XML документа
-
-XML документът `catalog.xml` има коренов елемент `<catalog>`, в
-който се съдържат три основни колекции:
-
-| Елемент    | Описание                                                       |
-|-----------|----------------------------------------------------------------|
-| `genres`  | Съдържа елементи `genre` с атрибути `id` (тип `ID`) и `name`. |
-| `companies` | Описва фирмите (разработчици/издатели) със съставен ключ `name + role` и атрибути `country`. |
-| `games`   | Съдържа елементи `game` с атрибути `id`, `genreId`, `releaseDate` (тип `xs:date`) и `image` (тип `ENTITY` с изброени допустими стойности).  Вътре има поделементи `title`, `platforms`, `summary` и списък `companies` с елементи `companyRef`. |
-
-Фрагмент от документа, показващ връзките, е даден по‑долу:
-
-```xml
-<game id="game2" genreId="g2" image="eldenring" releaseDate="2022-02-25">
-  <title>Elden Ring</title>
-  …
-  <companies>
-    <companyRef name="FromSoftware" role="developer"/>
-    <companyRef name="FromSoftware" role="publisher"/>
-    <companyRef name="Bandai Namco Entertainment" role="publisher"/>
-  </companies>
-</game>
-```
+- `genres` – list of game genres  
+- `companies` – developers and publishers  
+- `games` – game entries with references to genres and companies  
 
 ### 3.2 XML Schema (XSD)
 
-Схемата `catalog.xsd` дефинира типовете и ограниченията за всеки
-елемент.  За атрибута `image` е създаден собствен тип `ImageEntityType`
-с изброени стойности (имена на ентитети), за да се предотвратят
-грешни препратки.  Композитният ключ за фирмите е реализиран чрез
-`xs:key`, а връзките от `companyRef` – чрез `xs:keyref`.
+The XSD defines all element structures and constraints. A custom type
+`ImageEntityType` ensures that images refer only to declared entities.
+Composite company identity is validated via a key-keyref pair.
 
-### 3.3 XSLT и JavaScript
+### 3.3 XSLT and JavaScript
 
-Стиловият лист `catalog.xsl` преобразува XML документа в HTML.
-Изображенията се вмъкват чрез извикване на `unparsed-entity-uri(@image)`.
-Сортирането и филтрирането се осъществяват от малък
-JavaScript скрипт, който не изисква външни библиотеки.  Таблицата
-показва заглавията, датите на издаване, жанровете (изчислени
-чрез търсене в колекцията `genres`), платформите, списъците с
-разработчици и издатели, кратко описание и миниатюра.
+The XSLT stylesheet transforms XML into HTML, displays all games in a table, and
+injects images using unparsed-entity references. JavaScript implements sorting
+and filtering, while CSS provides styling and layout.
 
-HTML страницата използва външен стилов лист `style.css`, който
-определя цветова схема, типография, редуване на цветове на редовете и
-оформлението на контролите.  Отделянето на CSS позволява лесно
-адаптиране на външния вид без промяна на XSLT.
-
-### 3.4 Организация на файловете
-
-Проектът се съхранява в директория `xml_video_game_catalog` със следната
-структура:
+### 3.4 File Structure
 
 ```
 xml_video_game_catalog/
-├── catalog.xml        – основният XML документ
-├── catalog.xsd        – XML Schema за валидиране
-├── catalog.xsl        – XSLT за генериране на HTML
-├── style.css          – стилове за HTML
-├── images/            – изображения на игрите (генерирани)
+├── catalog.xml
+├── catalog.xsd
+├── catalog.xsl
+├── style.css
+├── images/
 │   ├── totk.png
 │   ├── eldenring.png
 │   ├── doometernal.png
@@ -166,90 +86,43 @@ xml_video_game_catalog/
 │   ├── witcher3.png
 │   ├── marioodyssey.png
 │   └── baldursgate3.png
-└── report.md          – настоящият отчет
+└── README.md
 ```
 
-### 3.5 Валидиране и тестване
+### 3.5 Validation and Testing
 
-За проверка на коректността използвахме инструмента `xmllint` със
-следната команда:
+Validation was performed with:
 
 ```
 xmllint --noout --schema catalog.xsd catalog.xml
 ```
 
-Резултатът „`catalog.xml validates`“ потвърди, че документът отговаря
-на схемата.  Допълнителното зареждане на `catalog.xml` в браузър
-показа, че XSLT се изпълнява коректно и таблицата е напълно
-функционална – търсенето, филтрирането и сортирането работят
-незабавно без презареждане на страницата.
+Testing in a browser confirmed that XSLT is applied correctly and all interactive
+features work smoothly.
 
-## 4. Използване на генеративен изкуствен интелект
+## 4. Use of Generative AI
 
-По време на разработката използвахме генеративни услуги на OpenAI и
-инструментите, предоставени в рамките на задачата, както следва:
+AI tools were used for:
 
-* **Събиране на информация:** Моделът ChatGPT беше използван
-  интерактивно, за да формулира план за изпълнение на проекта и да
-  структурира изискванията.  Конкретните данни за игрите бяха
-  проверявани чрез търсене в интернет и цитирани от надеждни източници.
-* **Генериране на изображения:** Използвахме инструмента
-  `imagegen.make_image` за създаване на стилизирани изображения,
-  които представят атмосферата на всяка игра без да нарушават
-  авторски права.  Например, за *The Legend of Zelda* беше
-  генериран фантастичен пейзаж с летящи острови, докато за
-  *Minecraft* – блокова сцена с реката и планините.  Съгласно
-  ограниченията на платформата избягвахме изображение на реални
-  персонажи или насилие.
-* **Подготовка на отчет:** Отчетът е написан в Markdown, генериран
-  частично чрез помощта на ChatGPT, като съдържанието беше
-  допълнително редактирано и структурирано от авторите.  Финалният
-  файл може да бъде конвертиран в `.docx` чрез `pandoc`.
+- Project planning and structural design  
+- Assistance with descriptions, formatting, and explanations  
+- Generating stylized game images without violating copyright  
+- Markdown formatting and documentation layout  
 
-## 5. Заключение
+## 5. Conclusion
 
-Разработеният каталог на видеоигрите изпълнява всички базови
-изисквания на задачата – съдържа осем популярни заглавия от
-различни жанрове, описани чрез структурирани елементи и валидирани със
-XML Schema.  Връзките между жанрове, фирми и игри са реализирани с
-композитни ключове и референции.  Изображенията са свързани чрез
-неразрешени ентитети.  С помощта на XSLT, CSS и JavaScript
-създадохме интерактивен уеб интерфейс, който позволява лесно филтриране,
-търсене и сортиране на игрите.  
+The resulting catalog meets all assignment requirements:  
+structured data, XSD validation, key/keyref relationships, unparsed entities for
+images, and an interactive browser view via XSLT, CSS, and JavaScript. Future
+extensions could include adding ratings, reviews, or external APIs.
 
-Проектът демонстрира как XML може да служи като устойчива основа за
-каталози и как XSLT и JavaScript превръщат данните в удобен за
-потребителя изглед.  Възможни бъдещи подобрения включват добавяне на
-оценки или рецензии чрез външни API, както и по‑детайлни визуализации
-на статистики за игрите.
+## 6. Work Distribution
 
-## 6. Разпределение на работата
+| Task | Ivaylo Kanchev | Yoan Baychev |
+|------|----------------|--------------|
+| Gathering and verifying game information | X | X |
+| Designing XML/XSD structure | X |  |
+| XSLT, CSS, JS implementation |  | X |
+| Image generation | X | X |
+| Report preparation | X | X |
 
-| Задача | Ивайло Кънчев | Йоан Байчев |
-|-------|---------------|-------------|
-| Събиране и проверка на информация за игрите | X | X |
-| Проектиране на XML структура и XSD | X |  |
-| Реализация на XSLT, CSS и JavaScript |  | X |
-| Генериране на изображения | X | X |
-| Подготовка на отчета и форматиране | X | X |
-
-## 7. Използвани източници
-
-1. **Тестван документ:** Указания за разработване на курсова задача по XML
-   технологии【61165999571456†L92-L93】.
-2. **Zelda Wiki – Tears of the Kingdom:** Съдържа информация за
-   разработчици, издател и дата на издаване на играта【668173338624498†L225-L260】.
-3. **Press release – Elden Ring:** Обявява датата на издаване, жанра,
-   платформите и издателите на играта【858416695712795†L116-L153】.
-4. **Doom Fandom – DOOM Eternal:** Детайли за разработчик, издател,
-   платформи и дати на издаване【345590806197211†L192-L247】.
-5. **Minecraft Wikipedia:** Описва историята на играта, разработчика,
-   издателя и платформите【777400238768303†L296-L432】.
-6. **Tetris Fandom:** Информация за създателите и историята на
-   Tetris【397473246799368†L134-L152】.
-7. **The Witcher 3 Fandom:** Съдържа данни за разработчик,
-   издател и дати на издаване【501590420045290†L355-L402】.
-8. **Super Mario Odyssey – Super Mario Wiki:** Обобщава разработчици,
-   издател, платформа и дати на издаване【30768275475321†L17-L31】【30768275475321†L53-L107】.
-9. **Baldur’s Gate 3 – Wikipedia:** Предоставя информация за
-   разработчика, издателя, платформите и датите на излизане【167625458483725†L173-L214】.
