@@ -1,0 +1,73 @@
+/*
+  Основни стилове за каталога на видеоигрите.
+  Определят се шрифтове, цветове и оформление на таблицата, както
+  стилизиране на контролите за филтриране и търсене.
+*/
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+h1 {
+  text-align: center;
+  color: #004080;
+}
+
+.controls {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.controls label {
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+.controls select,
+.controls input[type="text"] {
+  padding: 6px;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  vertical-align: top;
+}
+
+th {
+  background-color: #0066cc;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #eef;
+}
+
+.image img {
+  max-width: 150px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.summary {
+  max-width: 300px;
+}
