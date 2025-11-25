@@ -1,79 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="catalog.xsl"?>
 <!--
-  Каталог на видеоигри за развлечение – XML документ.
+  Video game catalog – XML document.
 
-  В този документ се дефинират видеоигри от различни жанрове.  Съдържанието
-  включва данни за жанрове, фирми (разработчици и издатели) и самите игри.
-  Изображенията към игрите са описани чрез неразрешени (unparsed) XML
-  ентитети – виж декларациите в DOCTYPE.  При визуализация с XSLT се
-  използва функцията unparsed‑entity‑uri() за извличане на системния
-  идентификатор на ентитета и генериране на правилен SRC атрибут за HTML.
-  Документът е валидиран с XML Schema, посочена чрез xsi:noNamespaceSchemaLocation.
+  This document defines video games from different genres. The content
+  includes data about genres, companies (developers and publishers) and
+  the games themselves. The images for the games are described via
+  unparsed XML entities – see the declarations in the DOCTYPE. When
+  visualized with XSLT, the unparsed-entity-uri() function is used to
+  obtain the system identifier of the entity and generate a correct SRC
+  attribute for HTML. The document is validated with the XML Schema
+  referenced via xsi:noNamespaceSchemaLocation.
 -->
 <!DOCTYPE catalog [
-  <!-- Декларации на неразрешени графични ентитети (изображения). -->
-  <!ENTITY totk        SYSTEM "images/totk.png"        NDATA png>
-  <!ENTITY eldenring   SYSTEM "images/eldenring.png"   NDATA png>
-  <!ENTITY doometernal SYSTEM "images/doometernal.png" NDATA png>
-  <!ENTITY minecraft   SYSTEM "images/minecraft.png"   NDATA png>
-  <!ENTITY tetris      SYSTEM "images/tetris.png"      NDATA png>
-  <!ENTITY witcher3    SYSTEM "images/witcher3.png"    NDATA png>
+  <!-- Declarations of unparsed graphic entities (images). -->
+  <!ENTITY totk        SYSTEM "images/totk.png"         NDATA png>
+  <!ENTITY eldenring   SYSTEM "images/eldenring.png"    NDATA png>
+  <!ENTITY doometernal SYSTEM "images/doometernal.png"  NDATA png>
+  <!ENTITY minecraft   SYSTEM "images/minecraft.png"    NDATA png>
+  <!ENTITY tetris      SYSTEM "images/tetris.png"       NDATA png>
+  <!ENTITY witcher3    SYSTEM "images/witcher3.png"     NDATA png>
   <!ENTITY mario       SYSTEM "images/marioodyssey.png" NDATA png>
   <!ENTITY bg3         SYSTEM "images/baldursgate3.png" NDATA png>
 ]>
 <catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="catalog.xsd">
-  <!-- Списък на жанровете. -->
+
+  <!-- List of genres. -->
   <genres>
-    <genre id="g1" name="Екшън-приключение"/>
-    <genre id="g2" name="Екшън RPG"/>
-    <genre id="g3" name="Екшън от първо лице"/>
-    <genre id="g4" name="Пясъчник / Оцеляване"/>
-    <genre id="g5" name="Пъзел"/>
-    <genre id="g6" name="Платформър"/>
-    <genre id="g7" name="Ролеви"/>
+    <genre id="g1" name="Action-adventure"/>
+    <genre id="g2" name="Action RPG"/>
+    <genre id="g3" name="First-person action"/>
+    <genre id="g4" name="Sandbox / Survival"/>
+    <genre id="g5" name="Puzzle"/>
+    <genre id="g6" name="Platformer"/>
+    <genre id="g7" name="Role-playing"/>
   </genres>
 
-  <!-- Списък на фирмите (разработчици и издатели). -->
+  <!-- List of companies (developers and publishers). -->
   <companies>
-    <!-- Nintendo EPD и Monolith Soft – разработчици на Tears of the Kingdom -->
+    <!-- Nintendo EPD and Monolith Soft – developers of Tears of the Kingdom -->
     <company name="Nintendo EPD" country="Japan" role="developer"/>
     <company name="Monolith Soft" country="Japan" role="developer"/>
     <company name="Nintendo" country="Japan" role="publisher"/>
-    <!-- FromSoftware и Bandai Namco Entertainment -->
+
+    <!-- FromSoftware and Bandai Namco Entertainment -->
     <company name="FromSoftware" country="Japan" role="developer"/>
     <company name="Bandai Namco Entertainment" country="Japan" role="publisher"/>
     <company name="FromSoftware" country="Japan" role="publisher"/>
+
     <!-- DOOM Eternal -->
     <company name="id Software" country="United States" role="developer"/>
     <company name="Bethesda Softworks" country="United States" role="publisher"/>
+
     <!-- Minecraft -->
     <company name="Mojang Studios" country="Sweden" role="developer"/>
     <company name="Mojang Studios" country="Sweden" role="publisher"/>
+
     <!-- Tetris -->
     <company name="Alexey Pajitnov" country="Russia" role="developer"/>
     <company name="Vadim Gerasimov" country="Russia" role="developer"/>
     <company name="The Tetris Company" country="United States" role="publisher"/>
-    <!-- Witcher 3 -->
+
+    <!-- The Witcher 3 -->
     <company name="CD Projekt RED" country="Poland" role="developer"/>
     <company name="CD Projekt" country="Poland" role="publisher"/>
+
     <!-- Super Mario Odyssey -->
     <company name="1-Up Studio" country="Japan" role="developer"/>
+
     <!-- Larian Studios -->
     <company name="Larian Studios" country="Belgium" role="developer"/>
     <company name="Larian Studios" country="Belgium" role="publisher"/>
   </companies>
 
-  <!-- Списък на игрите. -->
+  <!-- List of games. -->
   <games>
     <game id="game1" genreId="g1" image="totk" releaseDate="2023-05-12">
       <title>The Legend of Zelda: Tears of the Kingdom</title>
       <platforms>Nintendo Switch</platforms>
-      <summary>Продължение на Breath of the Wild, в което играчите изследват
-        отворения свят на Хайрул и нови летящи острови, решават пъзели и
-        използват свободата на придвижване, за да спасят кралството. Играта е
-        разработена от Nintendo EPD и Monolith Soft, а издател е Nintendo【668173338624498†L225-L260】.</summary>
+      <summary>
+        Sequel to Breath of the Wild in which players explore the open world
+        of Hyrule and new floating islands, solve puzzles and use movement
+        abilities to save the kingdom. The game is developed by Nintendo EPD
+        and Monolith Soft and published by Nintendo.
+      </summary>
       <companies>
         <companyRef name="Nintendo EPD" role="developer"/>
         <companyRef name="Monolith Soft" role="developer"/>
@@ -83,13 +94,16 @@
 
     <game id="game2" genreId="g2" image="eldenring" releaseDate="2022-02-25">
       <title>Elden Ring</title>
-      <platforms>PlayStation 5, PlayStation 4, Xbox Series X|S, Xbox One, Windows (Steam)</platforms>
-      <summary>Elden Ring е екшън ролева игра, разработена от FromSoftware със
-        сътрудничеството на писателя Джордж Р. Р. Мартин. Играта представя
-        отворен свят – „Земите между“ – със сложни битки и митология. Първоначално
-        издаването е на 25 февруари 2022 г. за PlayStation 5/4, Xbox Series X|S,
-        Xbox One и Windows; извън Япония издател е Bandai Namco Entertainment,
-        а в Япония – FromSoftware【858416695712795†L116-L153】.</summary>
+      <platforms>PlayStation 5, PlayStation 4, Xbox Series X|S, Xbox One, Windows (Steam)</platforms>
+      <summary>
+        An action role-playing game developed by FromSoftware with
+        worldbuilding contributions from writer George R. R. Martin. It
+        features an open world called the Lands Between with challenging
+        combat and deep lore. It was first released on 25 February 2022 for
+        PlayStation 5/4, Xbox Series X|S, Xbox One and Windows; it is
+        published worldwide by Bandai Namco Entertainment and in Japan
+        by FromSoftware.
+      </summary>
       <companies>
         <companyRef name="FromSoftware" role="developer"/>
         <companyRef name="FromSoftware" role="publisher"/>
@@ -98,13 +112,15 @@
     </game>
 
     <game id="game3" genreId="g3" image="doometernal" releaseDate="2020-03-20">
-      <title>DOOM Eternal</title>
-      <platforms>Windows, PlayStation 4, Xbox One, Stadia, Nintendo Switch, PlayStation 5, Xbox Series X|S</platforms>
-      <summary>DOOM Eternal е бърз шутър от първо лице и продължение на
-        DOOM (2016). Разработен е от id Software, а издател е Bethesda Softworks.
-        Играта излиза на 20 март 2020 г. за Windows, Xbox One, PlayStation 4 и Stadia,
-        през декември 2020 г. за Nintendo Switch и през 2021 г. за платформите
-        от следващо поколение【345590806197211†L192-L247】.</summary>
+      <title>DOOM Eternal</title>
+      <platforms>Windows, PlayStation 4, Xbox One, Stadia, Nintendo Switch, PlayStation 5, Xbox Series X|S</platforms>
+      <summary>
+        A fast-paced first-person shooter and direct sequel to DOOM (2016).
+        Developed by id Software and published by Bethesda Softworks, it
+        launched on 20 March 2020 for Windows, Xbox One, PlayStation 4 and
+        Stadia, later arriving on Nintendo Switch in December 2020 and on
+        next-generation consoles in 2021.
+      </summary>
       <companies>
         <companyRef name="id Software" role="developer"/>
         <companyRef name="Bethesda Softworks" role="publisher"/>
@@ -113,14 +129,16 @@
 
     <game id="game4" genreId="g4" image="minecraft" releaseDate="2011-11-18">
       <title>Minecraft</title>
-      <platforms>Windows, macOS, Linux, Xbox, PlayStation, Nintendo Switch, мобилни устройства</platforms>
-      <summary>Minecraft е пясъчна игра със сървайвъл елементи, създадена първоначално
-        от Маркус Персон и по-късно развивана от студиото Mojang. Официалната
-        версия излиза на 18 ноември 2011 г., след публична алфа от 2009 г. Играчите
-        могат свободно да се движат и да строят в процедурно генериран блоков свят,
-        да събират ресурси, да изработват предмети и да оцеляват. Играта е
-        разработена и публикувана от Mojang Studios и е най‑продаваната
-        видеоигра в историята【777400238768303†L296-L432】.</summary>
+      <platforms>Windows, macOS, Linux, Xbox, PlayStation, Nintendo Switch, mobile devices</platforms>
+      <summary>
+        A sandbox game with survival elements, originally created by Markus
+        Persson and later developed by Mojang Studios. The official version
+        was released on 18 November 2011 after a public alpha starting in
+        2009. Players can freely explore and build in a procedurally
+        generated blocky world, gather resources, craft items and try to
+        survive. It is both developed and published by Mojang Studios and is
+        the best-selling video game in history.
+      </summary>
       <companies>
         <companyRef name="Mojang Studios" role="developer"/>
         <companyRef name="Mojang Studios" role="publisher"/>
@@ -129,14 +147,15 @@
 
     <game id="game5" genreId="g5" image="tetris" releaseDate="1984-06-06">
       <title>Tetris</title>
-      <platforms>Elektronika 60, IBM PC, Amiga, Atari ST, Apple II, NES, Game Boy и много други</platforms>
-      <summary>Tetris е класическа пъзел игра, създадена от Алексей Пажитнов в
-        Съветския съюз, а версията за MS‑DOS е програмирана от Вадим Герасимов.
-        В нея цветни тетромино блокове падат отгоре и играчите ги въртят и
-        подреждат, за да оформят цели редове. Играта дебютира на 6 юни 1984 г. в
-        СССР и се разпространява на разнообразни платформи. Публикувана е
-        от различни компании и се счита за един от най‑влиятелните пъзели в
-        историята【397473246799368†L134-L152】.</summary>
+      <platforms>Elektronika 60, IBM PC, Amiga, Atari ST, Apple II, NES, Game Boy and many others</platforms>
+      <summary>
+        A classic puzzle game created by Alexey Pajitnov in the Soviet Union,
+        with the MS-DOS version programmed by Vadim Gerasimov. Colored
+        tetromino blocks fall from the top and players rotate and position
+        them to form complete lines. First released on 6 June 1984, it has
+        appeared on numerous platforms and is considered one of the most
+        influential puzzle games of all time.
+      </summary>
       <companies>
         <companyRef name="Alexey Pajitnov" role="developer"/>
         <companyRef name="Vadim Gerasimov" role="developer"/>
@@ -145,14 +164,16 @@
     </game>
 
     <game id="game6" genreId="g2" image="witcher3" releaseDate="2015-05-19">
-      <title>The Witcher 3: Wild Hunt</title>
-      <platforms>Windows, PlayStation 4, Xbox One, Nintendo Switch, PlayStation 5, Xbox Series X|S</platforms>
-      <summary>The Witcher 3 е приключенска ролева игра, разработена от CD Projekt RED.
-        Действието се развива в отворен свят, а играчът поема ролята на ведьмака
-        Гералт, който търси осиновената си дъщеря, преследвана от Дивия лов.
-        Играта излиза на 19 май 2015 г., през октомври 2019 г. за Nintendo Switch
-        и през декември 2022 г. за платформите от следващо поколение. Издател е
-        CD Projekt【501590420045290†L355-L402】.</summary>
+      <title>The Witcher 3: Wild Hunt</title>
+      <platforms>Windows, PlayStation 4, Xbox One, Nintendo Switch, PlayStation 5, Xbox Series X|S</platforms>
+      <summary>
+        An open-world action role-playing game developed by CD Projekt RED.
+        Players control Geralt of Rivia, a monster hunter searching for his
+        adopted daughter who is pursued by the spectral Wild Hunt. The game
+        launched on 19 May 2015, came to Nintendo Switch in October 2019 and
+        received next-generation versions in December 2022. It is published
+        by CD Projekt.
+      </summary>
       <companies>
         <companyRef name="CD Projekt RED" role="developer"/>
         <companyRef name="CD Projekt" role="publisher"/>
@@ -160,13 +181,15 @@
     </game>
 
     <game id="game7" genreId="g6" image="mario" releaseDate="2017-10-27">
-      <title>Super Mario Odyssey</title>
-      <platforms>Nintendo Switch</platforms>
-      <summary>Super Mario Odyssey е триизмерен платформър, разработен от Nintendo EPD
-        Tokyo и 1‑Up Studio и публикуван от Nintendo. В играта Марио пътешества
-        в множество кралства със своя нов приятел – магическата шапка Cappy – и
-        събира Power Moons, за да управлява въздушния кораб Odyssey. Играта
-        излиза на 27 октомври 2017 г., а по‑късно и в някои азиатски региони【30768275475321†L17-L31】【30768275475321†L53-L107】.</summary>
+      <title>Super Mario Odyssey</title>
+      <platforms>Nintendo Switch</platforms>
+      <summary>
+        A 3D platformer developed by Nintendo EPD Tokyo and 1-Up Studio and
+        published by Nintendo. Mario travels across many kingdoms with his
+        new friend, the sentient hat Cappy, collecting Power Moons to fuel
+        the airship Odyssey. The game was released on 27 October 2017 and
+        later in additional Asian regions.
+      </summary>
       <companies>
         <companyRef name="Nintendo EPD" role="developer"/>
         <companyRef name="1-Up Studio" role="developer"/>
@@ -175,15 +198,16 @@
     </game>
 
     <game id="game8" genreId="g7" image="bg3" releaseDate="2023-08-03">
-      <title>Baldur’s Gate 3</title>
-      <platforms>Windows, PlayStation 5, macOS, Xbox Series X|S, Linux</platforms>
-      <summary>Baldur’s Gate 3 е ролева игра по системата на Dungeons &amp; Dragons,
-        разработена и публикувана от Larian Studios. В играта играчите изследват
-        света на Забравените кралства, създават герои и вземат решения, които
-        оформят историята. Първата версия за Windows излиза на 3 август 2023 г.,
-        следвана от PlayStation 5 през септември 2023 г., macOS през септември
-        2023 г., Xbox Series X|S през декември 2023 г. и планирана версия за
-        Linux през 2025 г. Разработчик и издател е Larian Studios【167625458483725†L173-L214】.</summary>
+      <title>Baldur’s Gate 3</title>
+      <platforms>Windows, PlayStation 5, macOS, Xbox Series X|S, Linux</platforms>
+      <summary>
+        A role-playing game based on the Dungeons &amp; Dragons ruleset, developed
+        and published by Larian Studios. Players explore the world of the
+        Forgotten Realms, create characters and make story-defining choices.
+        The full Windows version released on 3 August 2023, followed by
+        PlayStation 5 in September 2023, macOS in September 2023, Xbox Series
+        X|S in December 2023 and a planned Linux version in 2025.
+      </summary>
       <companies>
         <companyRef name="Larian Studios" role="developer"/>
         <companyRef name="Larian Studios" role="publisher"/>
