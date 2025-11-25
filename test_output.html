@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Каталог на видеоигрите</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<h1>Каталог на видеоигрите</h1>
+<div class="controls">
+<label for="genreFilter">Филтрирай по жанр:</label><select id="genreFilter" onchange="filterTable()"><option value="all">Всички жанрове</option>
+<option value="g1">Екшън-приключение</option>
+<option value="g2">Екшън RPG</option>
+<option value="g3">Екшън от първо лице</option>
+<option value="g4">Пясъчник / Оцеляване</option>
+<option value="g5">Пъзел</option>
+<option value="g6">Платформър</option>
+<option value="g7">Ролеви</option></select><input type="text" id="searchBox" onkeyup="filterTable()" placeholder="Търсене по заглавие…">
+</div>
+<table id="gamesTable">
+<thead><tr>
+<th onclick="sortTable(0, 'string')">Заглавие</th>
+<th onclick="sortTable(1, 'date')">Дата на издаване</th>
+<th onclick="sortTable(2, 'string')">Жанр</th>
+<th onclick="sortTable(3, 'string')">Платформи</th>
+<th onclick="sortTable(4, 'string')">Разработчик</th>
+<th onclick="sortTable(5, 'string')">Издател</th>
+<th>Описание</th>
+<th>Снимка</th>
+</tr></thead>
+<tbody>
+<tr data-genre="g1">
+<td class="title">The Legend of Zelda: Tears of the Kingdom</td>
+<td class="date">2023-05-12</td>
+<td class="genre">Екшън-приключение</td>
+<td class="platforms">Nintendo Switch</td>
+<td class="developers">Nintendo EPD, Monolith Soft</td>
+<td class="publishers">Nintendo</td>
+<td class="summary">Продължение на Breath of the Wild, в което играчите изследват
+        отворения свят на Хайрул и нови летящи острови, решават пъзели и
+        използват свободата на придвижване, за да спасят кралството. Играта е
+        разработена от Nintendo EPD и Monolith Soft, а издател е Nintendo【668173338624498†L225-L260】.</td>
+<td class="image"><img alt="Изображение" width="200" src="/home/oai/share/xml_video_game_catalog/images/totk.png"></td>
+</tr>
+<tr data-genre="g2">
+<td class="title">Elden Ring</td>
+<td class="date">2022-02-25</td>
+<td class="genre">Екшън RPG</td>
+<td class="platforms">PlayStation 5, PlayStation 4, Xbox Series X|S, Xbox One, Windows (Steam)</td>
+<td class="developers">FromSoftware</td>
+<td class="publishers">FromSoftware, Bandai Namco Entertainment</td>
+<td class="summary">Elden Ring е екшън ролева игра, разработена от FromSoftware със
+        сътрудничеството на писателя Джордж Р. Р. Мартин. Играта представя
+        отворен свят – „Земите между“ – със сложни битки и митология. Първоначално
+        издаването е на 25 февруари 2022 г. за PlayStation 5/4, Xbox Series X|S,
+        Xbox One и Windows; извън Япония издател е Bandai Namco Entertainment,
+        а в Япония – FromSoftware【858416695712795†L116-L153】.</td>
+<td class="image"><img alt="Изображение" width="200" src="/home/oai/share/xml_video_game_catalog/images/eldenring.png"></td>
+</tr>
+<tr data-genre="g3">
+<td class="title">DOOM Eternal</td>
+<td class="date">2020-03-20</td>
+<td class="genre">Екшън от първо лице</td>
+<td class="platforms">Windows, PlayStation 4, Xbox One, Stadia, Nintendo Switch, PlayStation 5, Xbox Series X|S</td>
+<td class="developers">id Software</td>
+<td class="publishers">Bethesda Softworks</td>
+<td class="summary">DOOM Eternal е бърз шутър от първо лице и продължение на
+        DOOM (2016). Разработен е от id Software, а издател е Bethesda Softworks.
+        Играта излиза на 20 март 2020 г. за Windows, Xbox One, PlayStation 4 и Stadia,
+        през декември 2020 г. за Nintendo Switch и през 2021 г. за платформите
+        от следващо поколение【345590806197211†L192-L247】.</td>
+<td class="image"><img alt="Изображение" width="200" src="/home/oai/share/xml_video_game_catalog/images/doometernal.png"></td>
+</tr>
+<tr data-genre="g4">
+<td class="title">Minecraft</td>
+<td class="date">2011-11-18</td>
+<td class="genre">Пясъчник / Оцеляване</td>
+<td class="platforms">Windows, macOS, Linux, Xbox, PlayStation, Nintendo Switch, мобилни устройства</td>
+<td class="developers">Mojang Studios</td>
+<td class="publishers">Mojang Studios</td>
+<td class="summary">Minecraft е пясъчна игра със сървайвъл елементи, създадена първоначално
+        от Маркус Персон и по-късно развивана от студиото Mojang. Официалната
+        версия излиза на 18 ноември 2011 г., след публична алфа от 2009 г. Играчите
+        могат свободно да се движат и да строят в процедурно генериран блоков свят,
+        да събират ресурси, да изработват предмети и да оцеляват. Играта е
+        разработена и публикувана от Mojang Studios и е най‑продаваната
+        видеоигра в историята【777400238768303†L296-L432】.</td>
+<td class="image"><img alt="Изображение" width="200" src="/home/oai/share/xml_video_game_catalog/images/minecraft.png"></td>
+</tr>
+<tr data-genre="g5">
+<td class="title">Tetris</td>
+<td class="date">1984-06-06</td>
+<td class="genre">Пъзел</td>
+<td class="platforms">Elektronika 60, IBM PC, Amiga, Atari ST, Apple II, NES, Game Boy и много други</td>
+<td class="developers">Alexey Pajitnov, Vadim Gerasimov</td>
+<td class="publishers">The Tetris Company</td>
+<td class="summary">Tetris е класическа пъзел игра, създадена от Алексей Пажитнов в
+        Съветския съюз, а версията за MS‑DOS е програмирана от Вадим Герасимов.
+        В нея цветни тетромино блокове падат отгоре и играчите ги въртят и
+        подреждат, за да оформят цели редове. Играта дебютира на 6 юни 1984 г. в
+        СССР и се разпространява на разнообразни платформи. Публикувана е
+        от различни компании и се счита за един от най‑влиятелните пъзели в
+        историята【397473246799368†L134-L152】.</td>
+<td class="image"><img alt="Изображение" width="200" src="/home/oai/share/xml_video_game_catalog/images/tetris.png"></td>
+</tr>
+<tr data-genre="g2">
+<td class="title">The Witcher 3: Wild Hunt</td>
+<td class="date">2015-05-19</td>
+<td class="genre">Екшън RPG</td>
+<td class="platforms">Windows, PlayStation 4, Xbox One, Nintendo Switch, PlayStation 5, Xbox Series X|S</td>
+<td class="developers">CD Projekt RED</td>
+<td class="publishers">CD Projekt</td>
+<td class="summary">The Witcher 3 е приключенска ролева игра, разработена от CD Projekt RED.
+        Действието се развива в отворен свят, а играчът поема ролята на ведьмака
+        Гералт, който търси осиновената си дъщеря, преследвана от Дивия лов.
+        Играта излиза на 19 май 2015 г., през октомври 2019 г. за Nintendo Switch
+        и през декември 2022 г. за платформите от следващо поколение. Издател е
+        CD Projekt【501590420045290†L355-L402】.</td>
+<td class="image"><img alt="Изображение" width="200" src="/home/oai/share/xml_video_game_catalog/images/witcher3.png"></td>
+</tr>
+<tr data-genre="g6">
+<td class="title">Super Mario Odyssey</td>
+<td class="date">2017-10-27</td>
+<td class="genre">Платформър</td>
+<td class="platforms">Nintendo Switch</td>
+<td class="developers">Nintendo EPD, 1-Up Studio</td>
+<td class="publishers">Nintendo</td>
+<td class="summary">Super Mario Odyssey е триизмерен платформър, разработен от Nintendo EPD
+        Tokyo и 1‑Up Studio и публикуван от Nintendo. В играта Марио пътешества
+        в множество кралства със своя нов приятел – магическата шапка Cappy – и
+        събира Power Moons, за да управлява въздушния кораб Odyssey. Играта
+        излиза на 27 октомври 2017 г., а по‑късно и в някои азиатски региони【30768275475321†L17-L31】【30768275475321†L53-L107】.</td>
+<td class="image"><img alt="Изображение" width="200" src="/home/oai/share/xml_video_game_catalog/images/marioodyssey.png"></td>
+</tr>
+<tr data-genre="g7">
+<td class="title">Baldur’s Gate 3</td>
+<td class="date">2023-08-03</td>
+<td class="genre">Ролеви</td>
+<td class="platforms">Windows, PlayStation 5, macOS, Xbox Series X|S, Linux</td>
+<td class="developers">Larian Studios</td>
+<td class="publishers">Larian Studios</td>
+<td class="summary">Baldur’s Gate 3 е ролева игра по системата на Dungeons &amp; Dragons,
+        разработена и публикувана от Larian Studios. В играта играчите изследват
+        света на Забравените кралства, създават герои и вземат решения, които
+        оформят историята. Първата версия за Windows излиза на 3 август 2023 г.,
+        следвана от PlayStation 5 през септември 2023 г., macOS през септември
+        2023 г., Xbox Series X|S през декември 2023 г. и планирана версия за
+        Linux през 2025 г. Разработчик и издател е Larian Studios【167625458483725†L173-L214】.</td>
+<td class="image"><img alt="Изображение" width="200" src="/home/oai/share/xml_video_game_catalog/images/baldursgate3.png"></td>
+</tr>
+</tbody>
+</table>
+<script type="text/javascript">
+function filterTable() {
+  var genre = document.getElementById('genreFilter').value;
+  var search = document.getElementById('searchBox').value.toLowerCase();
+  var table = document.getElementById('gamesTable');
+  var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var title = row.getElementsByClassName('title')[0].textContent.toLowerCase();
+    var genreMatch = (genre === 'all') || (row.getAttribute('data-genre') === genre);
+    var searchMatch = (title.indexOf(search) > -1);
+    if (genreMatch && searchMatch) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  }
+}
+
+var sortState = {};
+function sortTable(col, type) {
+  var table = document.getElementById('gamesTable');
+  var tbody = table.tBodies[0];
+  var rows = Array.prototype.slice.call(tbody.rows, 0);
+  // Determine the sorting direction
+  var dir = sortState[col] === 'asc' ? 'desc' : 'asc';
+  sortState[col] = dir;
+  rows.sort(function(a, b) {
+    var A = a.cells[col].textContent.trim();
+    var B = b.cells[col].textContent.trim();
+    if (type === 'date') {
+      A = new Date(A);
+      B = new Date(B);
+    } else {
+      A = A.toLowerCase();
+      B = B.toLowerCase();
+    }
+    if (A < B) return dir === 'asc' ? -1 : 1;
+    if (A > B) return dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+  // Append the sorted rows back to the table body
+  for (var i = 0; i < rows.length; i++) {
+    tbody.appendChild(rows[i]);
+  }
+}
+        </script>
+</body>
+</html>
