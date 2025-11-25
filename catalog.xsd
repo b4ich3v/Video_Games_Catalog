@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
   <!--
-    XML Schema за каталога на видеоигрите.  Схемата дефинира
-    типове и ограничения за елементите в catalog.xml.  Използват се
-    ключове и референции за реализиране на връзките между жанрове,
-    фирми и игри.
+    XML Schema for the video game catalog. The schema defines
+    types and constraints for the elements in catalog.xml. Keys
+    and key references are used to model the relationships between
+    genres, companies and games.
   -->
 
-  <!-- Тип за id на жанр. -->
+  <!-- Type for a genre id. -->
   <xs:simpleType name="GenreIdType">
     <xs:restriction base="xs:ID"/>
   </xs:simpleType>
 
-  <!-- Тип за допустимите стойности на image атрибута (имената на ентитетите). -->
+  <!-- Type for allowed values of the image attribute (entity names). -->
   <xs:simpleType name="ImageEntityType">
     <xs:restriction base="xs:ENTITY">
       <xs:enumeration value="totk"/>
@@ -26,7 +26,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <!-- Коренов елемент catalog. -->
+  <!-- Root element catalog. -->
   <xs:element name="catalog">
     <xs:complexType>
       <xs:sequence>
@@ -34,23 +34,27 @@
         <xs:element ref="companies"/>
         <xs:element ref="games"/>
       </xs:sequence>
-      <!-- Декларация на ключа за жанровете -->
+
+      <!-- Key declaration for genres. -->
       <xs:key name="genreKey">
         <xs:selector xpath="genres/genre"/>
         <xs:field xpath="@id"/>
       </xs:key>
-      <!-- Декларация на съставен ключ за фирмите (име + роля) -->
+
+      <!-- Composite key for companies (name + role). -->
       <xs:key name="companyKey">
         <xs:selector xpath="companies/company"/>
         <xs:field xpath="@name"/>
         <xs:field xpath="@role"/>
       </xs:key>
-      <!-- Референция към ключа на жанра от игрите -->
+
+      <!-- Key reference from games to genre key. -->
       <xs:keyref name="gameGenreRef" refer="genreKey">
         <xs:selector xpath="games/game"/>
         <xs:field xpath="@genreId"/>
       </xs:keyref>
-      <!-- Референция към съставния ключ на фирма от companyRef -->
+
+      <!-- Key reference from companyRef elements to the composite company key. -->
       <xs:keyref name="companyRefKey" refer="companyKey">
         <xs:selector xpath="games/game/companies/companyRef"/>
         <xs:field xpath="@name"/>
@@ -59,7 +63,7 @@
     </xs:complexType>
   </xs:element>
 
-  <!-- genres: множество жанрове -->
+  <!-- genres: collection of genres -->
   <xs:element name="genres">
     <xs:complexType>
       <xs:sequence>
@@ -73,7 +77,7 @@
     </xs:complexType>
   </xs:element>
 
-  <!-- companies: множество фирми (разработчици/издатели). -->
+  <!-- companies: collection of companies (developers/publishers). -->
   <xs:element name="companies">
     <xs:complexType>
       <xs:sequence>
@@ -88,7 +92,7 @@
     </xs:complexType>
   </xs:element>
 
-  <!-- games: множество игри. -->
+  <!-- games: collection of games. -->
   <xs:element name="games">
     <xs:complexType>
       <xs:sequence>
@@ -98,7 +102,7 @@
               <xs:element name="title" type="xs:string"/>
               <xs:element name="platforms" type="xs:string"/>
               <xs:element name="summary" type="xs:string"/>
-              <!-- companies подигра -->
+              <!-- companies for a given game -->
               <xs:element name="companies">
                 <xs:complexType>
                   <xs:sequence>
