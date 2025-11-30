@@ -1,7 +1,4 @@
 # Agent Orchestration & Architecture
-
-This README describes the architecture of the agent system – how agents, the manager, routing, validation, domain parameters, infrastructure, memory, tokens, and concurrency all fit together.
-
 ---
 
 ## Table of Contents
