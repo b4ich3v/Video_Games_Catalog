@@ -27,7 +27,7 @@
 
 - **AgentManager**  
   Orchestrator responsible for:
-  - deciding *which* agents should run for a given request,
+  - deciding which agents should run for a given request,
   - executing them through a LangGraph state machine,
   - combining their outputs into a final answer.
 
