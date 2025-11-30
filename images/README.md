@@ -87,7 +87,8 @@ Responsibilities:
 - Exposes a single main method:
 
 ```python
-def run(self, query: str, thread_id: str, agent_requests: list[AgentRequest] | None = None config: dict | None = None) -> dict:
+def run(self, query: str, thread_id: str, 
+agent_requests: list[AgentRequest] | None = None config: dict | None = None) -> dict:
     ...
 ```
 
@@ -180,12 +181,8 @@ class Route(ABC):
     def edges(self) -> list[tuple[str, str]]:
         ...
 
-    def wire(
-        self,
-        graph: StateGraph,
-        node_factory: ManagerNodeFactory,
-        agents: AgentRegistry,
-    ) -> None:
+    def wire(self, graph: StateGraph,
+        node_factory: ManagerNodeFactory, agents: AgentRegistry) -> None:
         ...
 ```
 
