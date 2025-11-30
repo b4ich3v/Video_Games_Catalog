@@ -87,13 +87,7 @@ Responsibilities:
 - Exposes a single main method:
 
 ```python
-def run(
-    self,
-    query: str,
-    thread_id: str,
-    agent_requests: list[AgentRequest] | None = None,
-    config: dict | None = None,
-) -> dict:
+def run(self, query: str, thread_id: str, agent_requests: list[AgentRequest] | None = None config: dict | None = None) -> dict:
     ...
 ```
 
