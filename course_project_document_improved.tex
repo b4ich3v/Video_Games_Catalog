@@ -10,6 +10,7 @@
 \usepackage{geometry}
 \geometry{margin=2.5cm}
 \usepackage{microtype}
+\usepackage{graphicx}
 
 % Header and footer
 \usepackage{fancyhdr}
@@ -86,6 +87,8 @@
 
 Първата стъпка е валидиране срещу XML Schema (\texttt{catalog.xsd}), която дефинира типове за идентификатори, ключове и референции, както и изброени стойности за атрибута \texttt{image}. Ключовете \texttt{genreKey} и \texttt{companyKey} (композитен ключ по \texttt{name}+\texttt{role}) и съответните ключови връзки (\texttt{keyref}) гарантират, че всяка игра сочи валиден жанр и валидни компании за разработка/издаване. След валидирането XML се трансформира чрез XSLT стил (\texttt{catalog.xsl}) директно в браузъра. Трансформацията създава HTML таблица с колони като заглавие, дата на излизане, жанр, платформи, разработчик, издател, описание и изображение; изображенията се вмъкват чрез функцията \texttt{unparsed-entity-uri(@image)}. JavaScript осигурява интерактивност: търсене, филтър и сортиране. CSS определя визуалния облик и удобството за ползване.
 
+\textbf{Контрол на грешки}: ако \texttt{xmllint} засече липсващ жанр или компания, процесът спира и XML се коригира преди трансформация. Ако в \texttt{DOCTYPE} липсва ентитет, XSD енума отхвърля стойността и улавя несъответствието. При визуализация, счупен \texttt{src} би се видял като празно изображение, което се предотвратява чрез предварителната валидация.
+
 Изходът е една HTML страница, която може да се зареди директно в браузър без сървърна логика. Всички зависимости са файлови: XML, XSD, XSLT, CSS и изображения. Работният процес е лесно повторим: при добавяне на нова игра се обновява XML-ът и, ако има ново изображение, се актуализира \texttt{DOCTYPE}/XSD енума; валидирането и трансформацията се извършват отново без промени в кода.
 
 \textbf{Примерен поток (конкретно)}: входът е \texttt{catalog.xml} + \texttt{catalog.xsd} + PNG в \texttt{images/}. Стъпки: (1) \texttt{xmllint} валидира; (2) браузър прилага \texttt{catalog.xsl}; (3) генерира се HTML с таблица и контроли; (4) JS активира търсене/филтри/сортиране; (5) потребителят преглежда/филтрира списъка. Очакван резултат: осем реда, всеки със снимка, коректни жанрове и компании.
@@ -111,6 +114,19 @@
   \item \texttt{game7} – Super Mario Odyssey, жанр Platformer, Nintendo EPD / 1-Up Studio / Nintendo, дата 2017-10-27.
   \item \texttt{game8} – Baldur's Gate 3, жанр Role-playing, Larian Studios (dev/pub), дата 2023-08-03.
 \end{itemize}
+
+\textbf{Примерен фрагмент (game):}
+\begin{verbatim}
+<game id="game3" genreId="g3" image="doometernal" releaseDate="2020-03-20">
+  <title>DOOM Eternal</title>
+  <platforms>Windows, PlayStation 4, Xbox One, Stadia...</platforms>
+  <summary>...</summary>
+  <companies>
+    <companyRef name="id Software" role="developer"/>
+    <companyRef name="Bethesda Softworks" role="publisher"/>
+  </companies>
+</game>
+\end{verbatim}
 
 \textbf{Процедура при добавяне на нова игра (поддръжка):}
 \begin{enumerate}[leftmargin=2em]
@@ -167,6 +183,14 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \subsection{Разширяемост и алтернативи}
 \textbf{Разширения}: поджанрове и PEGI/ESRB рейтинги; филтри по платформи и диапазон дати; PDF изход чрез XSL‑FO; локализация на интерфейса; по‑строга типизация на платформи чрез отделен \texttt{enum}/колекция; интеграция с външни API. \textbf{Алтернативи}: JSON/HTML без XSLT (по‑малко демонстрация на XML трансформации); бекенд/БД (по‑тежка инфраструктура); външни шрифтове/фреймуърци (добавят зависимости).
 
+\subsection{Рискове и ограничения}
+\begin{itemize}[topsep=0pt]
+  \item \textbf{Поддръжка на XSLT}: различните браузъри имат дребни разлики; статичният \texttt{test\_output.html} служи като fallback.
+  \item \textbf{Ръчна актуализация}: данните се обновяват ръчно; липсва автоматично синхронизиране с външни източници.
+  \item \textbf{Размер на изображенията}: PNG файловете са 1.5–3.2 MB; при бавна мрежа зареждането може да се усеща. Опция: компресия/thumbnail.
+  \item \textbf{Валидиране}: пропуск в \texttt{DOCTYPE}/XSD enum води до невалиден \texttt{@image}; checklist в апендикса намалява риска.
+\end{itemize}
+
 \subsection{Обобщение}
 Дизайнът демонстрира цялостна XML-първа архитектура: дефиниране и валидиране на структурата, използване на непарснати ентитети за графика, трансформация с XSLT и клиентска интерактивност с JavaScript, оформена с CSS. Връзките между жанрове, компании и игри са строго типизирани чрез \texttt{key}/\texttt{keyref} и \texttt{ID}/\texttt{IDREF}, а изображенията са управлявани през \texttt{ENTITY} декларации.
 
@@ -211,10 +235,27 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \begin{itemize}
   \item \textbf{Файлова структура} – \texttt{catalog.xml}, \texttt{catalog.xsd}, \texttt{catalog.xsl}, \texttt{style.css}, \texttt{test\_output.html}, \texttt{README.md}, \texttt{course\_project\_report.md} и директория \texttt{images/} с осем PNG.
   \item \textbf{Валидация}: \texttt{xmllint --noout --schema catalog.xsd catalog.xml}.
-  \item \textbf{Трансформация извън браузър}: \texttt{xsltproc catalog.xsl catalog.xml > output.html}.
-  \item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{test\_output.html} (референтен резултат), \texttt{course\_project\_report.md}/\texttt{course\_project\_document\_improved.tex} (документация).
+\item \textbf{Трансформация извън браузър}: \texttt{xsltproc catalog.xsl catalog.xml > output.html}.
+\item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{test\_output.html} (референтен резултат), \texttt{course\_project\_report.md}/\texttt{course\_project\_document\_improved.tex} (документация).
   \item \textbf{Workflow checklist}: добави/актуализирай данни в XML; обнови \texttt{DOCTYPE}/XSD enum при ново изображение; пусни \texttt{xmllint}; провери визуално в браузър; при нужда генерирай статичен HTML с \texttt{xsltproc}.
+  \item \textbf{Скрийншоти}: ако са налични \texttt{screenshots/overview.png} и \texttt{screenshots/filter.png}, те се вмъкват по-долу.
   \item \textbf{Допълнителни материали}: екранни снимки, инструкции за локално отваряне (\texttt{python -m http.server 8000} и \url{http://localhost:8000/catalog.xml}) и др.
 \end{itemize}
+
+\IfFileExists{screenshots/overview.png}{
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{screenshots/overview.png}
+    \caption{Преглед на каталога с активни контроли.}
+  \end{figure}
+}{\textit{(Добавете файл screenshots/overview.png, за да се вмъкне автоматично.)}}
+
+\IfFileExists{screenshots/filter.png}{
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{screenshots/filter.png}
+    \caption{Филтър по жанр в действие.}
+  \end{figure}
+}{\textit{(Добавете файл screenshots/filter.png, за да се вмъкне автоматично.)}}
 
 \end{document}
