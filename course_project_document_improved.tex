@@ -93,6 +93,8 @@
 
 \textbf{Примерен поток (конкретно)}: входът е \texttt{catalog.xml} + \texttt{catalog.xsd} + PNG в \texttt{images/}. Стъпки: (1) \texttt{xmllint} валидира; (2) браузър прилага \texttt{catalog.xsl}; (3) генерира се HTML с таблица и контроли; (4) JS активира търсене/филтри/сортиране; (5) потребителят преглежда/филтрира списъка. Очакван резултат: осем реда, всеки със снимка, коректни жанрове и компании.
 
+Предимства на този поток: няма зависимости от сървър, така че каталогът се пренася и отваря офлайн; валидирането се случва преди рендериране, което гарантира качеството на данните; обновяването е локализирано в един XML файл плюс, при нужда, DOCTYPE/XSD. Ограничения: при добавяне на много ресурси размерът на XML и изображенията може да забави зареждането; филтър/търсене работят в браузъра и не е оптимизирано за хиляди записи (но е достатъчно за учебния обем).
+
 \subsection{Структура на съдържанието}
 Структурата на съдържанието е описана формално в \texttt{catalog.xsd}. Моделът включва:
 \begin{itemize}[topsep=0pt]
@@ -102,6 +104,8 @@
   \item \textbf{Медийни ресурси} – в \texttt{DOCTYPE} са дефинирани непарснати ентитети (\texttt{totk}, \texttt{eldenring}, \texttt{doometernal}, \texttt{minecraft}, \texttt{tetris}, \texttt{witcher3}, \texttt{mario}, \texttt{bg3}), които сочат към PNG файлове. XSD енума \texttt{ImageEntityType} дублира тези стойности и гарантира съответствие.
 \end{itemize}
 Връзките между колекциите се реализират чрез \texttt{ID}/\texttt{IDREF} и \texttt{key}/\texttt{keyref}, което позволява автоматична проверка за консистентност. Форматът е лесно разширяем: добавяне на нови игри, жанрове или компании изисква само попълване на XML-а и, при ново изображение, обновяване на \texttt{DOCTYPE}/XSD.
+
+Проверки за консистентност: дублиране на жанр или компания по роля се блокира от ключовете; липсващ \texttt{genreId} се улавя от \texttt{gameGenreRef}; грешен \texttt{image} се улавя от \texttt{ImageEntityType}; неправилно въведена дата (не-ISO) се отхвърля от \texttt{xs:date}. Така всяка връзка има формална защита, а данните остават „самодокументирани“ чрез схемата.
 
 \textbf{Обзор на игрите (кратко):}
 \begin{itemize}[topsep=0pt]
@@ -156,6 +160,8 @@
   \item \textbf{Резултат} – една HTML страница, която може да се отвори директно и включва търсачка, филтър по жанр и сортиране на колони.
 \end{enumerate}
 
+Данните и изгледът са отделени: XML/XSD описват модела, XSLT е „view“ слой, а CSS/JS оформят и добавят динамика. Пътят на потока е еднопосочен (XML → XSLT → HTML/JS/CSS), което улеснява поддръжката. Всяка промяна в данните не налага промяна в кода, освен ако не се въвеждат нови типове ресурси (изображения, нови полета).
+
 \subsection{XML ентитети}
 Медийните ресурси са дефинирани като непарснати ентитети в \texttt{DOCTYPE}:
 \begin{verbatim}
@@ -189,14 +195,57 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \item \textbf{Ръчна актуализация}: данните се обновяват ръчно; липсва автоматично синхронизиране с външни източници.
   \item \textbf{Размер на изображенията}: PNG файловете са 1.5–3.2 MB; при бавна мрежа зареждането може да се усеща. Опция: компресия/thumbnail.
   \item \textbf{Валидиране}: пропуск в \texttt{DOCTYPE}/XSD enum води до невалиден \texttt{@image}; checklist в апендикса намалява риска.
+  \item \textbf{Производителност при голям обем}: текущият JS филтър/сортиране е напълно клиентски и при стотици записи може да се усеща забавяне; за учебния обем (8–20 реда) е достатъчно.
 \end{itemize}
 
 \subsection{Обобщение}
 Дизайнът демонстрира цялостна XML-първа архитектура: дефиниране и валидиране на структурата, използване на непарснати ентитети за графика, трансформация с XSLT и клиентска интерактивност с JavaScript, оформена с CSS. Връзките между жанрове, компании и игри са строго типизирани чрез \texttt{key}/\texttt{keyref} и \texttt{ID}/\texttt{IDREF}, а изображенията са управлявани през \texttt{ENTITY} декларации.
 
+\IfFileExists{screenshots/xsl_snippet.png}{
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{screenshots/xsl_snippet.png}
+    \caption{XSLT: заглавна част на таблицата и начало на итерацията върху \texttt{games/game}.}
+  \end{figure}
+}{}
+
+\IfFileExists{screenshots/xsl_snippet_2.png}{
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{screenshots/xsl_snippet_2.png}
+    \caption{XSLT: рендериране на компании, жанрове и описание (продължение).}
+  \end{figure}
+}{}
+
+\IfFileExists{screenshots/xsl_snippet_3.png}{
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{screenshots/xsl_snippet_3.png}
+    \caption{XSLT: долна част на тялото на таблицата и завършване на редовете.}
+  \end{figure}
+}{}
+
+\IfFileExists{screenshots/js_filter_sort.png}{
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{screenshots/js_filter_sort.png}
+    \caption{JavaScript: функции \texttt{filterTable()} и \texttt{sortTable()}.}
+  \end{figure}
+}{}
+
+\IfFileExists{screenshots/css_snippet.png}{
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{screenshots/css_snippet.png}
+    \caption{CSS: стилове за контролите и табличното оформление.}
+  \end{figure}
+}{}
+
 \section{Използване на изкуствен интелект}
 \label{sec:ai}
 Изкуственият интелект бе използван като асистент при планиране, генериране на чернови и проверка на формулировки. Модел от типа LLM (GPT‑семейство) беше подканван с ясни ограничения: жанрове, роли developer/publisher, ISO дати, UTF‑8, непарснати \texttt{ENTITY} имена за изображения, както и указания за структурата на XML/XSD/XSLT. Генерираните текстове (резюмета, описания, документация) бяха преглеждани и редактирани ръчно; кодът (XML/XSD/XSLT/CSS/JS) беше проверен за синтактична коректност и съвместимост. За изображения се използваха стилизирани/генерирани варианти, за да се избегнат авторски права. SWOT: Strengths – бързо съдържание и консистентна структура; Weaknesses – нужда от ръчна проверка; Opportunities – разширяване с рейтинги, интеграции, локализация; Threats – остаряване на данни и варираща XSLT поддръжка.
+
+Примери за употреба: автогенерация на резюмета на игрите, предложение за структурата на XSLT/CSS, както и идеи за JS филтър/сортиране. Всяко предложение бе валидирано срещу факти и учебните изисквания; неточности (дати, платформи) бяха коригирани ръчно. AI не замества проверката на схема и ключове, а служи като ускорител за текстовото съдържание и оформление.
 
 \section{Тестване}
 \label{sec:testing}
@@ -209,38 +258,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 Среда: Chrome/Edge/Firefox (актуални версии), локален прост HTTP сървър при нужда. Сценарии: сортиране по дата (ISO), търсене с главни/малки букви, филтър по жанр, проверка на счупен ентитет (очаквана грешка при валидация), липсващ жанр (очакван отказ от XSD). Препоръчителна автоматизация: \texttt{make validate} с \texttt{xmllint --noout --schema catalog.xsd catalog.xml} и \texttt{xsltproc catalog.xsl catalog.xml > /tmp/out.html}.
 Допълнително бяха проверени: коректно парсиране на ISO дати при сортиране; устойчивост на търсачката към главни/малки букви; липса на счупени \texttt{src} за изображения; отсъствие на грешки в конзолата. Препоръчително е при всяко добавяне на игра да се пусне \texttt{xmllint} и визуален преглед в поне два браузъра.
 
-\section{Заключение и възможно бъдещо развитие}
-\label{sec:conclusion}
-Проектът демонстрира как чрез XML и свързани технологии може да се реализира богат, интерактивен каталог без нужда от бекенд. Предимствата са ясната структура, автоматичната валидация, лесната поддръжка и преносимост. Основните ограничения са ръчната актуализация и зависимостта от XSLT поддръжка в браузърите.
-
-В бъдеще каталогът може да се разшири с оценки и ревюта, филтри по платформи и времеви интервали, локализация на интерфейса, генериране на PDF чрез XSL‑FO и по‑строга типизация (например отделна колекция за платформи). Други идеи включват йерархия на жанровете, интеграция с външни API за автоматично обновяване на данните и версия на мобилно приложение. Планирани разширения: поддръжка на поджанрове и PEGI/ESRB рейтинги; филтри по платформа и диапазон дати; PDF изход чрез XSL‑FO; локализация на интерфейса; по‑строга типизация на платформи чрез отделен \texttt{enum}/колекция; интеграция с външни API за автоматично обновяване на каталога.
-Практическа приложимост: подходът е подходящ за малки/средни каталози, офлайн справочници и учебни демонстрации. Поддръжка: при обновяване се следва checklist от апендикса (данни → \texttt{DOCTYPE}/XSD → \texttt{xmllint} → визуален преглед → по желание \texttt{xsltproc}). При нужда от по-мащабно решение може да се въведе бекенд или API синхронизация, но текущият файл-базиран модел остава лек и преносим.
-
-\section{Разпределение на работата}
-\label{sec:work-distribution}
-Работата по проекта беше разделена така:
-\begin{itemize}
-  \item \textbf{Събиране и проверка на данни за игрите, жанровете, платформите и компаниите}: Автор A, Автор B.
-  \item \textbf{Проектиране на XML структурата и XSD схемата}: Автор A.
-  \item \textbf{Разработка на XSLT, CSS и JavaScript за визуализация и интерактивност}: Автор B.
-  \item \textbf{Подготовка на изображения и \texttt{DOCTYPE} ентитети}: Автор A, Автор B.
-  \item \textbf{Документиране и преглед на код}: Автор A, Автор B.
-\end{itemize}
-
-\section{Източници и литература}
-Използвани бяха официални сайтове на компаниите (Nintendo, FromSoftware, Bethesda, Mojang, Larian и др.), енциклопедични източници за проверка на дати и платформи (например Wikipedia), спецификациите на W3C за XML, XML Schema и XSLT, документацията на \texttt{libxml2}/\texttt{xmllint}, както и курсови материали по „XML технологии за семантичен Уеб“. Основни референтни линкове: \url{https://www.w3.org/TR/xml/}, \url{https://www.w3.org/TR/xmlschema-1/}, \url{https://www.w3.org/TR/xslt}. Други източници могат да бъдат добавени при нужда.
-
-\section{Апендикс}
-\label{sec:appendix}
-\begin{itemize}
-  \item \textbf{Файлова структура} – \texttt{catalog.xml}, \texttt{catalog.xsd}, \texttt{catalog.xsl}, \texttt{style.css}, \texttt{test\_output.html}, \texttt{README.md}, \texttt{course\_project\_report.md} и директория \texttt{images/} с осем PNG.
-  \item \textbf{Валидация}: \texttt{xmllint --noout --schema catalog.xsd catalog.xml}.
-\item \textbf{Трансформация извън браузър}: \texttt{xsltproc catalog.xsl catalog.xml > output.html}.
-\item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{test\_output.html} (референтен резултат), \texttt{course\_project\_report.md}/\texttt{course\_project\_document\_improved.tex} (документация).
-  \item \textbf{Workflow checklist}: добави/актуализирай данни в XML; обнови \texttt{DOCTYPE}/XSD enum при ново изображение; пусни \texttt{xmllint}; провери визуално в браузър; при нужда генерирай статичен HTML с \texttt{xsltproc}.
-  \item \textbf{Скрийншоти}: ако са налични \texttt{screenshots/overview.png} и \texttt{screenshots/filter.png}, те се вмъкват по-долу.
-  \item \textbf{Допълнителни материали}: екранни снимки, инструкции за локално отваряне (\texttt{python -m http.server 8000} и \url{http://localhost:8000/catalog.xml}) и др.
-\end{itemize}
+Бъдещи тестове (ако се разширява): добавяне на mock данни с >50 записа за оценка на производителността на клиентските филтри; проверка на адаптивността на CSS на по-тесни екрани; тест с компресирани изображения за сравнение на време за зареждане; unit тест за XSD с умишлено счупени стойности (грешен \texttt{genreId}, липсващ \texttt{company}, невалидна дата).
 
 \IfFileExists{screenshots/overview.png}{
   \begin{figure}[h]
@@ -248,7 +266,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
     \includegraphics[width=0.95\textwidth]{screenshots/overview.png}
     \caption{Преглед на каталога с активни контроли (начален изглед).}
   \end{figure}
-}{\textit{(Добавете файл screenshots/overview.png, за да се вмъкне автоматично.)}}
+}{}
 
 \IfFileExists{screenshots/midpage.png}{
   \begin{figure}[h]
@@ -289,5 +307,37 @@ xmllint --noout --schema catalog.xsd catalog.xml
     \caption{Сортиране по дата (низходящо).}
   \end{figure}
 }{}
+
+\section{Заключение и възможно бъдещо развитие}
+\label{sec:conclusion}
+Проектът демонстрира как чрез XML и свързани технологии може да се реализира богат, интерактивен каталог без нужда от бекенд. Предимствата са ясната структура, автоматичната валидация, лесната поддръжка и преносимост. Основните ограничения са ръчната актуализация и зависимостта от XSLT поддръжка в браузърите.
+
+В бъдеще каталогът може да се разшири с оценки и ревюта, филтри по платформи и времеви интервали, локализация на интерфейса, генериране на PDF чрез XSL‑FO и по‑строга типизация (например отделна колекция за платформи). Други идеи включват йерархия на жанровете, интеграция с външни API за автоматично обновяване на данните и версия на мобилно приложение. Планирани разширения: поддръжка на поджанрове и PEGI/ESRB рейтинги; филтри по платформа и диапазон дати; PDF изход чрез XSL‑FO; локализация на интерфейса; по‑строга типизация на платформи чрез отделен \texttt{enum}/колекция; интеграция с външни API за автоматично обновяване на каталога.
+Практическа приложимост: подходът е подходящ за малки/средни каталози, офлайн справочници и учебни демонстрации. Поддръжка: при обновяване се следва checklist от апендикса (данни → \texttt{DOCTYPE}/XSD → \texttt{xmllint} → визуален преглед → по желание \texttt{xsltproc}). При нужда от по-мащабно решение може да се въведе бекенд или API синхронизация, но текущият файл-базиран модел остава лек и преносим.
+
+\section{Разпределение на работата}
+\label{sec:work-distribution}
+Работата по проекта беше разделена така:
+\begin{itemize}
+  \item \textbf{Събиране и проверка на данни за игрите, жанровете, платформите и компаниите}: Автор A, Автор B.
+  \item \textbf{Проектиране на XML структурата и XSD схемата}: Автор A.
+  \item \textbf{Разработка на XSLT, CSS и JavaScript за визуализация и интерактивност}: Автор B.
+  \item \textbf{Подготовка на изображения и \texttt{DOCTYPE} ентитети}: Автор A, Автор B.
+  \item \textbf{Документиране и преглед на код}: Автор A, Автор B.
+\end{itemize}
+
+\section{Източници и литература}
+Използвани бяха официални сайтове на компаниите (Nintendo, FromSoftware, Bethesda, Mojang, Larian и др.), енциклопедични източници за проверка на дати и платформи (например Wikipedia), спецификациите на W3C за XML, XML Schema и XSLT, документацията на \texttt{libxml2}/\texttt{xmllint}, както и курсови материали по „XML технологии за семантичен Уеб“. Основни референтни линкове: \url{https://www.w3.org/TR/xml/}, \url{https://www.w3.org/TR/xmlschema-1/}, \url{https://www.w3.org/TR/xslt}. Други източници могат да бъдат добавени при нужда.
+
+\section{Апендикс}
+\label{sec:appendix}
+\begin{itemize}
+  \item \textbf{Файлова структура} – \texttt{catalog.xml}, \texttt{catalog.xsd}, \texttt{catalog.xsl}, \texttt{style.css}, \texttt{test\_output.html}, \texttt{README.md}, \texttt{course\_project\_report.md} и директория \texttt{images/} с осем PNG.
+  \item \textbf{Валидация}: \texttt{xmllint --noout --schema catalog.xsd catalog.xml}.
+\item \textbf{Трансформация извън браузър}: \texttt{xsltproc catalog.xsl catalog.xml > output.html}.
+\item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{test\_output.html} (референтен резултат), \texttt{course\_project\_report.md}/\texttt{course\_project\_document\_improved.tex} (документация).
+  \item \textbf{Workflow checklist}: добави/актуализирай данни в XML; обнови \texttt{DOCTYPE}/XSD enum при ново изображение; пусни \texttt{xmllint}; провери визуално в браузър; при нужда генерирай статичен HTML с \texttt{xsltproc}.
+  \item \textbf{Допълнителни материали}: екранни снимки, инструкции за локално отваряне (\texttt{python -m http.server 8000} и \url{http://localhost:8000/catalog.xml}) и др.
+\end{itemize}
 
 \end{document}
