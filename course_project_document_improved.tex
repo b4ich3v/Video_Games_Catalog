@@ -120,17 +120,13 @@
 \end{itemize}
 
 \textbf{Примерен фрагмент (game):}
-\begin{verbatim}
-<game id="game3" genreId="g3" image="doometernal" releaseDate="2020-03-20">
-  <title>DOOM Eternal</title>
-  <platforms>Windows, PlayStation 4, Xbox One, Stadia...</platforms>
-  <summary>...</summary>
-  <companies>
-    <companyRef name="id Software" role="developer"/>
-    <companyRef name="Bethesda Softworks" role="publisher"/>
-  </companies>
-</game>
-\end{verbatim}
+\IfFileExists{screenshots/xml_fragment_game3.png}{
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{screenshots/xml_fragment_game3.png}
+    \caption{XML фрагмент за \texttt{game3} (DOOM Eternal) с атрибути и компании.}
+  \end{figure}
+}{\textit{(Добавете файл screenshots/xml_fragment_game3.png, за да се вмъкне автоматично.)}}
 
 \textbf{Процедура при добавяне на нова игра (поддръжка):}
 \begin{enumerate}[leftmargin=2em]
