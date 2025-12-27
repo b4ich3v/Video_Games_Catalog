@@ -98,6 +98,27 @@
 \end{itemize}
 Връзките между колекциите се реализират чрез \texttt{ID}/\texttt{IDREF} и \texttt{key}/\texttt{keyref}, което позволява автоматична проверка за консистентност. Форматът е лесно разширяем: добавяне на нови игри, жанрове или компании изисква само попълване на XML-а и, при ново изображение, обновяване на \texttt{DOCTYPE}/XSD.
 
+\textbf{Обзор на игрите (кратко):}
+\begin{itemize}[topsep=0pt]
+  \item \texttt{game1} – The Legend of Zelda: TOTK, жанр Action-adventure, разработчици Nintendo EPD/Monolith Soft, издател Nintendo, дата 2023-05-12.
+  \item \texttt{game2} – Elden Ring, жанр Action RPG, FromSoftware (dev/publisher), Bandai Namco (publisher), дата 2022-02-25.
+  \item \texttt{game3} – DOOM Eternal, жанр First-person action, id Software / Bethesda, дата 2020-03-20.
+  \item \texttt{game4} – Minecraft, жанр Sandbox/Survival, Mojang (dev/pub), дата 2011-11-18.
+  \item \texttt{game5} – Tetris, жанр Puzzle, Alexey Pajitnov / Vadim Gerasimov / The Tetris Company, дата 1984-06-06.
+  \item \texttt{game6} – The Witcher 3, жанр Action RPG, CD Projekt RED / CD Projekt, дата 2015-05-19.
+  \item \texttt{game7} – Super Mario Odyssey, жанр Platformer, Nintendo EPD / 1-Up Studio / Nintendo, дата 2017-10-27.
+  \item \texttt{game8} – Baldur's Gate 3, жанр Role-playing, Larian Studios (dev/pub), дата 2023-08-03.
+\end{itemize}
+
+\textbf{Процедура при добавяне на нова игра (поддръжка):}
+\begin{enumerate}[leftmargin=2em]
+  \item Добави PNG в \texttt{images/} и дефинирай непарснат ентитет в \texttt{DOCTYPE}.
+  \item Обнови XSD \texttt{ImageEntityType} (\texttt{enumeration}) с новото име.
+  \item Вмъкни запис в \texttt{games} с валиден \texttt{genreId} и \texttt{companyRef} стойности по роля.
+  \item По желание добави нов жанр/компания в съответната колекция.
+  \item Пусни \texttt{xmllint} за валидация и визуална проверка в браузър.
+\end{enumerate}
+
 \textbf{Разширяемост}: нова игра изисква добавяне на елемент в \texttt{games}, валиден \texttt{genreId} към \texttt{genres}, референции към компании и, при ново изображение, обновяване на \texttt{DOCTYPE} и XSD \texttt{enum}. Ако се въведат поджанрове, може да се добави \texttt{parentId} и нови \texttt{key}/\texttt{keyref}. За платформи може да се дефинира отделна колекция с \texttt{enum}, за да се избегнат свободни текстове.
 
 \subsection{Тип и представяне на съдържанието}
@@ -159,6 +180,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \item \textbf{Визуален преглед} – зареждане на \texttt{catalog.xml} и статичния \texttt{test\_output.html} в различни браузъри.
   \item \textbf{Функционални тестове} – тестване на търсачката, филтъра по жанр и сортирането на всички колони, проверка за правилно зареждане на изображенията.
 \end{itemize}
+Среда: Chrome/Edge/Firefox (актуални версии), локален прост HTTP сървър при нужда. Сценарии: сортиране по дата (ISO), търсене с главни/малки букви, филтър по жанр, проверка на счупен ентитет (очаквана грешка при валидация), липсващ жанр (очакван отказ от XSD). Препоръчителна автоматизация: \texttt{make validate} с \texttt{xmllint --noout --schema catalog.xsd catalog.xml} и \texttt{xsltproc catalog.xsl catalog.xml > /tmp/out.html}.
 Допълнително бяха проверени: коректно парсиране на ISO дати при сортиране; устойчивост на търсачката към главни/малки букви; липса на счупени \texttt{src} за изображения; отсъствие на грешки в конзолата. Препоръчително е при всяко добавяне на игра да се пусне \texttt{xmllint} и визуален преглед в поне два браузъра.
 
 \section{Заключение и възможно бъдещо развитие}
@@ -179,7 +201,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \end{itemize}
 
 \section{Източници и литература}
-Използвани бяха официални сайтове на компаниите (Nintendo, FromSoftware, Bethesda, Mojang, Larian и др.), енциклопедични източници за проверка на дати и платформи (например Wikipedia), спецификациите на W3C за XML, XML Schema и XSLT, документацията на \texttt{libxml2}/\texttt{xmllint}, както и курсови материали по „XML технологии за семантичен Уеб“. Други източници могат да бъдат добавени при нужда.
+Използвани бяха официални сайтове на компаниите (Nintendo, FromSoftware, Bethesda, Mojang, Larian и др.), енциклопедични източници за проверка на дати и платформи (например Wikipedia), спецификациите на W3C за XML, XML Schema и XSLT, документацията на \texttt{libxml2}/\texttt{xmllint}, както и курсови материали по „XML технологии за семантичен Уеб“. Основни референтни линкове: \url{https://www.w3.org/TR/xml/}, \url{https://www.w3.org/TR/xmlschema-1/}, \url{https://www.w3.org/TR/xslt}. Други източници могат да бъдат добавени при нужда.
 
 \section{Апендикс}
 \label{sec:appendix}
@@ -187,6 +209,8 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \item \textbf{Файлова структура} – \texttt{catalog.xml}, \texttt{catalog.xsd}, \texttt{catalog.xsl}, \texttt{style.css}, \texttt{test\_output.html}, \texttt{README.md}, \texttt{course\_project\_report.md} и директория \texttt{images/} с осем PNG.
   \item \textbf{Валидация}: \texttt{xmllint --noout --schema catalog.xsd catalog.xml}.
   \item \textbf{Трансформация извън браузър}: \texttt{xsltproc catalog.xsl catalog.xml > output.html}.
+  \item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{test\_output.html} (референтен резултат), \texttt{course\_project\_report.md}/\texttt{course\_project\_document\_improved.tex} (документация).
+  \item \textbf{Workflow checklist}: добави/актуализирай данни в XML; обнови \texttt{DOCTYPE}/XSD enum при ново изображение; пусни \texttt{xmllint}; провери визуално в браузър; при нужда генерирай статичен HTML с \texttt{xsltproc}.
   \item \textbf{Допълнителни материали}: екранни снимки, инструкции за локално отваряне (\texttt{python -m http.server 8000} и \url{http://localhost:8000/catalog.xml}) и др.
 \end{itemize}
 
