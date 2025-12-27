@@ -33,7 +33,7 @@
           <input type="text"
                  id="searchBox"
                  onkeyup="filterTable()"
-                 placeholder="Search by title…"/>
+                 placeholder="Search by title"/>
         </div>
 
         <table id="gamesTable">

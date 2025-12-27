@@ -1,4 +1,3 @@
-
 # Course Project: Video Game Entertainment Catalog – 2 (Topic 39)
 
 **Students:** Ivaylo Kanchev (`2MI0600305`), Yoan Baychev (`0MI0600328`)  
@@ -16,9 +15,8 @@ sorting.
 
 For the base implementation, we were required to describe **7–8 games**
 from different genres, specifying developers, publishers, platforms, and release
-dates.  
-Additionally, the project expands the requirements by implementing an interactive
-catalog that supports search by title and filtering by genre.
+dates. Additionally, the project expands the requirements by implementing an
+interactive catalog that supports search by title and filtering by genre.
 
 ## 2. Task Analysis
 
@@ -125,4 +123,3 @@ extensions could include adding ratings, reviews, or external APIs.
 | XSLT, CSS, JS implementation |  | X |
 | Image generation | X | X |
 | Report preparation | X | X |
-
