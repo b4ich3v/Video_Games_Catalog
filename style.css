@@ -27,10 +27,32 @@ h1 {
 }
 
 .controls select,
-.controls input[type="text"] {
-  padding: 6px;
+.controls input[type="text"],
+.controls button {
+  padding: 6px 10px;
   margin-right: 10px;
   font-size: 14px;
+  height: 32px;
+  box-sizing: border-box;
+}
+
+.controls select,
+.controls input[type="text"] {
+  border: 1px solid #888;
+  border-radius: 3px;
+}
+
+.controls button {
+  cursor: pointer;
+  background-color: #f8f8f8;
+  color: #222;
+  border: 1px solid #888;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+.controls button:hover {
+  background-color: #e6e6e6;
 }
 
 table {

@@ -34,6 +34,10 @@
                  id="searchBox"
                  onkeyup="filterTable()"
                  placeholder="Search by title"/>
+
+          <button type="button" onclick="sortTable(1, 'date')">
+            Sort by release date
+          </button>
         </div>
 
         <table id="gamesTable">
