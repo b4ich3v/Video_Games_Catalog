@@ -168,21 +168,21 @@
 
 Фронтендът представлява HTML таблица с удобни контроли за търсене и филтриране. CSS добавя стил – светъл фон, цветен хедър, редуващи се редове, ограничена ширина на изображенията. JavaScript осигурява динамика без нужда от презареждане.
 
-\textbf{Файлове и размери:}
+\textbf{Файлове и роли:}
 \begin{table}[H]
 \centering
 \small
-\begin{tabularx}{0.9\textwidth}{|l|l|c|c|}
+\begin{tabularx}{0.8\textwidth}{|l|X|}
 \hline
-\textbf{Файл} & \textbf{Тип} & \textbf{Редове} & \textbf{Размер (KB)} \\
+\textbf{Файл} & \textbf{Роля} \\
 \hline
-catalog.xml & XML данни & 217 & 9.96 \\
+catalog.xml & Данни: жанрове, компании, игри, връзки към изображения (ENTITY) \\
 \hline
-catalog.xsd & XML Schema & 129 & 4.47 \\
+catalog.xsd & Схема: типове, ключове, keyref, enum за изображения \\
 \hline
-catalog.xsl & XSLT + JS вграден & 169 & 5.40 \\
+catalog.xsl & Трансформация към HTML, вграден JS за сортиране/филтър/търсене \\
 \hline
-style.css & CSS стилове & 95 & 1.41 \\
+style.css & Стилове за таблицата, контролите и изображенията \\
 \hline
 \end{tabularx}
 \end{table}
@@ -209,6 +209,27 @@ style.css & CSS стилове & 95 & 1.41 \\
 ...
 \end{verbatim}
 Използването на ентитети позволява централизирано управление на изображенията. В XSLT се използва \texttt{unparsed-entity-uri(@image)} за превръщане на ентитета в URL за \texttt{<img>}, което улеснява поддръжката и валидирането чрез XSD енума \texttt{ImageEntityType}.
+
+\subsection{Ключове и референции}
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{0.9\textwidth}{|l|X|X|}
+\hline
+\textbf{Име} & \textbf{Тип} & \textbf{Обхват / Значение} \\
+\hline
+genreKey & \texttt{xs:key} върху \texttt{genres/genre/@id} & Гарантира уникални жанрове; \texttt{game/@genreId} сочи към него. \\
+\hline
+gameGenreRef & \texttt{xs:keyref} върху \texttt{game/@genreId} & Всяка игра реферира валиден жанр. \\
+\hline
+companyKey & \texttt{xs:key} върху \texttt{company/@name + @role} & Композитен ключ (фирма, роля), позволява една фирма да е dev/publisher. \\
+\hline
+companyRefKey & \texttt{xs:keyref} върху \texttt{companyRef/@name + @role} & Проверява, че всеки \texttt{companyRef} сочи към валидна компания/роля. \\
+\hline
+ImageEntityType & \texttt{xs:simpleType} с \texttt{enumeration} & Синхронизира имена на ENTITY от DOCTYPE с XSD, предотвратява счупени изображения. \\
+\hline
+\end{tabularx}
+\end{table}
 
 \subsection{Валидация и тестове}
 Преди трансформацията данните се валидират с помощта на команда:
@@ -325,7 +346,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \begin{itemize}
   \item \textbf{Валидация на XML} – проверка с \texttt{xmllint} за валидност спрямо XSD.
   \item \textbf{Визуален преглед} – зареждане на \texttt{catalog.xml} и статичния \texttt{test\_output.html} в различни браузъри.
-  \item \textbf{Функционални тестове} – тестване на търсачката, филтъра по жанр и сортирането на всички колони, проверка за правилно зареждане на изображенията.
+\item \textbf{Функционални тестове} – тестване на търсачката, филтъра по жанр и сортирането на всички колони, проверка за правилно зареждане на изображенията.
 \end{itemize}
 Среда: Chrome/Edge/Firefox (актуални версии), локален прост HTTP сървър при нужда. Сценарии: сортиране по дата (ISO), търсене с главни/малки букви, филтър по жанр, проверка на счупен ентитет (очаквана грешка при валидация), липсващ жанр (очакван отказ от XSD). Препоръчителна автоматизация: \texttt{make validate} с \texttt{xmllint --noout --schema catalog.xsd catalog.xml} и \texttt{xsltproc catalog.xsl catalog.xml > /tmp/out.html}.
 Допълнително бяха проверени: коректно парсиране на ISO дати при сортиране; устойчивост на търсачката към главни/малки букви; липса на счупени \texttt{src} за изображения; отсъствие на грешки в конзолата. Препоръчително е при всяко добавяне на игра да се пусне \texttt{xmllint} и визуален преглед в поне два браузъра.
@@ -348,6 +369,8 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \hline
 \end{tabularx}
 \end{table}
+
+Негативните тестове се изпълняват ръчно чрез временно въвеждане на грешни стойности (несъществуващ жанр/компания, празно \texttt{companyRef}, невалидна дата), след което \texttt{xmllint} трябва да прекрати с грешка. Във визуалния слой се проверява, че при липсващо изображение XSD блокира стойността на атрибут \texttt{image}.
 
 Бъдещи тестове (ако се разширява): добавяне на mock данни с >50 записа за оценка на производителността на клиентските филтри; проверка на адаптивността на CSS на по-тесни екрани; тест с компресирани изображения за сравнение на време за зареждане; unit тест за XSD с умишлено счупени стойности (грешен \texttt{genreId}, липсващ \texttt{company}, невалидна дата).
 
@@ -451,8 +474,15 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \item \textbf{Валидация}: \texttt{xmllint --noout --schema catalog.xsd catalog.xml}.
 \item \textbf{Трансформация извън браузър}: \texttt{xsltproc catalog.xsl catalog.xml > output.html}.
   \item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{documentation/documentation.tex} (документация).
-  \item \textbf{Workflow checklist}: добави/актуализирай данни в XML; обнови \texttt{DOCTYPE}/XSD enum при ново изображение; пусни \texttt{xmllint}; провери визуално в браузър; при нужда генерирай статичен HTML с \texttt{xsltproc}.
-  \item \textbf{Допълнителни материали}: екранни снимки, инструкции за локално отваряне (\texttt{python -m http.server 8000} и \url{http://localhost:8000/catalog.xml}) и др.
+\item \textbf{Workflow checklist}: добави/актуализирай данни в XML; обнови \texttt{DOCTYPE}/XSD enum при ново изображение; пусни \texttt{xmllint}; провери визуално в браузър; при нужда генерирай статичен HTML с \texttt{xsltproc}.
+\item \textbf{Допълнителни материали}: екранни снимки, инструкции за локално отваряне (\texttt{python -m http.server 8000} и \url{http://localhost:8000/catalog.xml}) и др.
+\item \textbf{Локално стартиране без риск за файловата система}:
+  \begin{itemize}[leftmargin=1.5em]
+    \item VS Code Live Server: инсталирай разширението, отвори папката, натисни \emph{Go Live}, зареди \url{http://localhost:5500/catalog.xml}.
+    \item Python HTTP server: \texttt{python3 -m http.server 8000}, после \url{http://localhost:8000/catalog.xml}.
+  \end{itemize}
+  Това елиминира ограниченията за достъп до локални ресурси в съвременните браузъри.
+\item \textbf{Бележка за съвместимост}: Ако се ползва остарял IE/IE mode, може да се отвори трансформацията директно от файловата система, но се препоръчва модерен браузър + локален сървър за пълна функционалност на JS/сортиране.
 \end{itemize}
 
 \end{document}
