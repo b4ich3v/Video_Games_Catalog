@@ -54,7 +54,7 @@
     {\large Бакалавърска програма „Софтуерно инженерство”}\\[4ex]
     {\large Предмет: XML технологии за семантичен Уеб}\\[1ex]
     {\large Зимен семестър, 2025/2026 год.}\\[6ex]
-    {\Large Тема №0123: „Шаблон за оформление на документация на курсов проект“}\\[3ex]
+    {\Large Тема №39: „Каталог на видеоигри за развлечение - 2“}\\[3ex]
     {\large Курсов проект}\\[3ex]
     \begin{tabular}{l}
       Автори: \\
@@ -379,7 +379,15 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \end{itemize}
 
 \section{Източници и литература}
-Използвани бяха официални сайтове на компаниите (Nintendo, FromSoftware, Bethesda, Mojang, Larian и др.), енциклопедични източници за проверка на дати и платформи (например Wikipedia), спецификациите на W3C за XML, XML Schema и XSLT, документацията на \texttt{libxml2}/\texttt{xmllint}, както и курсови материали по „XML технологии за семантичен Уеб“. Основни референтни линкове: \url{https://www.w3.org/TR/xml/}, \url{https://www.w3.org/TR/xmlschema-1/}, \url{https://www.w3.org/TR/xslt}. Други източници могат да бъдат добавени при нужда.
+Използвани бяха официални сайтове на компаниите (Nintendo, FromSoftware, Bethesda, Mojang, Larian и др.), енциклопедични източници за проверка на дати и платформи (например Wikipedia), спецификациите на W3C за XML, XML Schema и XSLT, документацията на \texttt{libxml2}/\texttt{xmllint}, както и курсови материали по „XML технологии за семантичен Уеб“. Използваните източници:
+\begin{enumerate}[leftmargin=2em,label={[\arabic*]}]
+  \item W3C XML 1.0 Recommendation. Достъпно на: \url{https://www.w3.org/TR/xml/}.
+  \item W3C XML Schema Part 1: Structures. Достъпно на: \url{https://www.w3.org/TR/xmlschema-1/}.
+  \item W3C XSL Transformations (XSLT) 1.0. Достъпно на: \url{https://www.w3.org/TR/xslt}.
+  \item \texttt{libxml2}/\texttt{xmllint} Documentation. Достъпно на: \url{http://xmlsoft.org/}.
+  \item Материали по „XML технологии за семантичен Уеб“ (Moodle на курса).
+  \item Wikipedia статии за датите и платформите на игрите: Elden Ring, DOOM Eternal, Minecraft, Tetris, The Witcher 3, Super Mario Odyssey, Baldur's Gate 3.
+\end{enumerate}
 
 \section{Апендикс}
 \label{sec:appendix}
@@ -387,7 +395,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \item \textbf{Файлова структура} – \texttt{catalog.xml}, \texttt{catalog.xsd}, \texttt{catalog.xsl}, \texttt{style.css}, директории \texttt{images/} (осем PNG) и \texttt{screenshots/}, \texttt{documentation/documentation.tex}.
   \item \textbf{Валидация}: \texttt{xmllint --noout --schema catalog.xsd catalog.xml}.
 \item \textbf{Трансформация извън браузър}: \texttt{xsltproc catalog.xsl catalog.xml > output.html}.
-\item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{course\_project\_document\_improved.tex} (документация).
+  \item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{documentation/documentation.tex} (документация).
   \item \textbf{Workflow checklist}: добави/актуализирай данни в XML; обнови \texttt{DOCTYPE}/XSD enum при ново изображение; пусни \texttt{xmllint}; провери визуално в браузър; при нужда генерирай статичен HTML с \texttt{xsltproc}.
   \item \textbf{Допълнителни материали}: екранни снимки, инструкции за локално отваряне (\texttt{python -m http.server 8000} и \url{http://localhost:8000/catalog.xml}) и др.
 \end{itemize}
