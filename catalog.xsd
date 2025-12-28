@@ -14,7 +14,7 @@
 
   <!-- Type for allowed values of the image attribute (entity names). -->
   <xs:simpleType name="ImageEntityType">
-    <xs:restriction base="xs:ENTITY">
+    <xs:restriction base="xs:string">
       <xs:enumeration value="totk"/>
       <xs:enumeration value="eldenring"/>
       <xs:enumeration value="doometernal"/>
@@ -34,33 +34,33 @@
         <xs:element ref="companies"/>
         <xs:element ref="games"/>
       </xs:sequence>
-
-      <!-- Key declaration for genres. -->
-      <xs:key name="genreKey">
-        <xs:selector xpath="genres/genre"/>
-        <xs:field xpath="@id"/>
-      </xs:key>
-
-      <!-- Composite key for companies (name + role). -->
-      <xs:key name="companyKey">
-        <xs:selector xpath="companies/company"/>
-        <xs:field xpath="@name"/>
-        <xs:field xpath="@role"/>
-      </xs:key>
-
-      <!-- Key reference from games to genre key. -->
-      <xs:keyref name="gameGenreRef" refer="genreKey">
-        <xs:selector xpath="games/game"/>
-        <xs:field xpath="@genreId"/>
-      </xs:keyref>
-
-      <!-- Key reference from companyRef elements to the composite company key. -->
-      <xs:keyref name="companyRefKey" refer="companyKey">
-        <xs:selector xpath="games/game/companies/companyRef"/>
-        <xs:field xpath="@name"/>
-        <xs:field xpath="@role"/>
-      </xs:keyref>
     </xs:complexType>
+
+    <!-- Key declaration for genres. -->
+    <xs:key name="genreKey">
+      <xs:selector xpath="genres/genre"/>
+      <xs:field xpath="@id"/>
+    </xs:key>
+
+    <!-- Composite key for companies (name + role). -->
+    <xs:key name="companyKey">
+      <xs:selector xpath="companies/company"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@role"/>
+    </xs:key>
+
+    <!-- Key reference from games to genre key. -->
+    <xs:keyref name="gameGenreRef" refer="genreKey">
+      <xs:selector xpath="games/game"/>
+      <xs:field xpath="@genreId"/>
+    </xs:keyref>
+
+    <!-- Key reference from companyRef elements to the composite company key. -->
+    <xs:keyref name="companyRefKey" refer="companyKey">
+      <xs:selector xpath="games/game/companies/companyRef"/>
+      <xs:field xpath="@name"/>
+      <xs:field xpath="@role"/>
+    </xs:keyref>
   </xs:element>
 
   <!-- genres: collection of genres -->
