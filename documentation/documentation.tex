@@ -142,13 +142,13 @@
 \end{figure}
 
 \textbf{Примерен фрагмент (game):}
-\IfFileExists{screenshots/xml_fragment_game3.png}{
+\IfFileExists{../screenshots/xml_fragment_game3.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/xml_fragment_game3.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/xml_fragment_game3.png}
     \caption{XML фрагмент за \texttt{game3} (DOOM Eternal) с атрибути и компании.}
   \end{figure}
-}{\textit{(Добавете файл screenshots/xml_fragment_game3.png, за да се вмъкне автоматично.)}}
+}{\textit{(Добавете файл ../screenshots/xml_fragment_game3.png, за да се вмъкне автоматично.)}}
 
 \textbf{Процедура при добавяне на нова игра (поддръжка):}
 \begin{enumerate}[leftmargin=2em]
@@ -253,42 +253,42 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \subsection{Обобщение}
 Дизайнът демонстрира цялостна XML-първа архитектура: дефиниране и валидиране на структурата, използване на непарснати ентитети за графика, трансформация с XSLT и клиентска интерактивност с JavaScript, оформена с CSS. Връзките между жанрове, компании и игри са строго типизирани чрез \texttt{key}/\texttt{keyref} и \texttt{ID}/\texttt{IDREF}, а изображенията са управлявани през \texttt{ENTITY} декларации.
 
-\IfFileExists{screenshots/xsl_snippet.png}{
+\IfFileExists{../screenshots/xsl_snippet.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/xsl_snippet.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/xsl_snippet.png}
     \caption{XSLT: заглавна част на таблицата и начало на итерацията върху \texttt{games/game}.}
   \end{figure}
 }{}
 
-\IfFileExists{screenshots/xsl_snippet_2.png}{
+\IfFileExists{../screenshots/xsl_snippet_2.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/xsl_snippet_2.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/xsl_snippet_2.png}
     \caption{XSLT: рендериране на компании, жанрове и описание (продължение).}
   \end{figure}
 }{}
 
-\IfFileExists{screenshots/xsl_snippet_3.png}{
+\IfFileExists{../screenshots/xsl_snippet_3.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/xsl_snippet_3.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/xsl_snippet_3.png}
     \caption{XSLT: долна част на тялото на таблицата и завършване на редовете.}
   \end{figure}
 }{}
 
-\IfFileExists{screenshots/js_filter_sort.png}{
+\IfFileExists{../screenshots/js_filter_sort.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/js_filter_sort.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/js_filter_sort.png}
     \caption{JavaScript: функции \texttt{filterTable()} и \texttt{sortTable()}.}
   \end{figure}
 }{}
 
-\IfFileExists{screenshots/css_snippet.png}{
+\IfFileExists{../screenshots/css_snippet.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/css_snippet.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/css_snippet.png}
     \caption{CSS: стилове за контролите и табличното оформление.}
   \end{figure}
 }{}
@@ -312,50 +312,50 @@ xmllint --noout --schema catalog.xsd catalog.xml
 
 Бъдещи тестове (ако се разширява): добавяне на mock данни с >50 записа за оценка на производителността на клиентските филтри; проверка на адаптивността на CSS на по-тесни екрани; тест с компресирани изображения за сравнение на време за зареждане; unit тест за XSD с умишлено счупени стойности (грешен \texttt{genreId}, липсващ \texttt{company}, невалидна дата).
 
-\IfFileExists{screenshots/overview.png}{
+\IfFileExists{../screenshots/overview.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/overview.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/overview.png}
     \caption{Преглед на каталога с активни контроли (начален изглед).}
   \end{figure}
 }{}
 
-\IfFileExists{screenshots/midpage.png}{
+\IfFileExists{../screenshots/midpage.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/midpage.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/midpage.png}
     \caption{Средна част на таблицата (редове 4–7).}
   \end{figure}
 }{}
 
-\IfFileExists{screenshots/bottom.png}{
+\IfFileExists{../screenshots/bottom.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/bottom.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/bottom.png}
     \caption{Долен край на таблицата (последен ред).}
   \end{figure}
 }{}
 
-\IfFileExists{screenshots/filter_action_rpg.png}{
+\IfFileExists{../screenshots/filter_action_rpg.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/filter_action_rpg.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/filter_action_rpg.png}
     \caption{Филтър по жанр “Action RPG”.}
   \end{figure}
 }{}
 
-\IfFileExists{screenshots/search_mario.png}{
+\IfFileExists{../screenshots/search_mario.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/search_mario.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/search_mario.png}
     \caption{Търсене по заглавие “mario”.}
   \end{figure}
 }{}
 
-\IfFileExists{screenshots/sort_date_desc.png}{
+\IfFileExists{../screenshots/sort_date_desc.png}{
   \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\textwidth]{screenshots/sort_date_desc.png}
+    \includegraphics[width=0.95\textwidth]{../screenshots/sort_date_desc.png}
     \caption{Сортиране по дата (низходящо).}
   \end{figure}
 }{}
@@ -384,7 +384,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \section{Апендикс}
 \label{sec:appendix}
 \begin{itemize}
-  \item \textbf{Файлова структура} – \texttt{catalog.xml}, \texttt{catalog.xsd}, \texttt{catalog.xsl}, \texttt{style.css}, директории \texttt{images/} (осем PNG) и \texttt{screenshots/}, \texttt{course\_project\_document\_improved.tex}.
+  \item \textbf{Файлова структура} – \texttt{catalog.xml}, \texttt{catalog.xsd}, \texttt{catalog.xsl}, \texttt{style.css}, директории \texttt{images/} (осем PNG) и \texttt{screenshots/}, \texttt{documentation/documentation.tex}.
   \item \textbf{Валидация}: \texttt{xmllint --noout --schema catalog.xsd catalog.xml}.
 \item \textbf{Трансформация извън браузър}: \texttt{xsltproc catalog.xsl catalog.xml > output.html}.
 \item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{course\_project\_document\_improved.tex} (документация).
