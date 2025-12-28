@@ -168,6 +168,25 @@
 
 Фронтендът представлява HTML таблица с удобни контроли за търсене и филтриране. CSS добавя стил – светъл фон, цветен хедър, редуващи се редове, ограничена ширина на изображенията. JavaScript осигурява динамика без нужда от презареждане.
 
+\textbf{Файлове и размери:}
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{0.9\textwidth}{|l|l|c|c|}
+\hline
+\textbf{Файл} & \textbf{Тип} & \textbf{Редове} & \textbf{Размер (KB)} \\
+\hline
+catalog.xml & XML данни & 217 & 9.96 \\
+\hline
+catalog.xsd & XML Schema & 129 & 4.47 \\
+\hline
+catalog.xsl & XSLT + JS вграден & 169 & 5.40 \\
+\hline
+style.css & CSS стилове & 95 & 1.41 \\
+\hline
+\end{tabularx}
+\end{table}
+
 \section{Дизайн}
 \label{sec:design}
 
@@ -390,13 +409,29 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \section{Разпределение на работата}
 \label{sec:work-distribution}
 Работата по проекта беше разделена така:
-\begin{itemize}
-  \item \textbf{Събиране и проверка на данни за игрите, жанровете, платформите и компаниите}: Автор A, Автор B.
-  \item \textbf{Проектиране на XML структурата и XSD схемата}: Автор A.
-  \item \textbf{Разработка на XSLT, CSS и JavaScript за визуализация и интерактивност}: Автор B.
-  \item \textbf{Подготовка на изображения и \texttt{DOCTYPE} ентитети}: Автор A, Автор B.
-  \item \textbf{Документиране и преглед на код}: Автор A, Автор B.
-\end{itemize}
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{0.9\textwidth}{|l|X|l|}
+\hline
+\textbf{#} & \textbf{Дейност} & \textbf{Отговорник} \\
+\hline
+1 & Събиране и проверка на данни (игри, жанрове, платформи, компании) & Ивайло Кънчев \\
+\hline
+2 & Проектиране на XML структура и XSD (ключове, keyref, enum за изображения) & Ивайло Кънчев \\
+\hline
+3 & Разработка на XSLT и клиентски JS (сортиране, филтър, търсене) & Йоан Байчев \\
+\hline
+4 & CSS стилове и визуална структура & Йоан Байчев \\
+\hline
+5 & Подготовка на изображения, ENTITY в DOCTYPE, синхрон с XSD enum & Ивайло Кънчев, Йоан Байчев \\
+\hline
+6 & Тестове (валидация, функционални, визуални) & Ивайло Кънчев, Йоан Байчев \\
+\hline
+7 & Документация и финален преглед & Ивайло Кънчев, Йоан Байчев \\
+\hline
+\end{tabularx}
+\end{table}
 
 \section{Източници и литература}
 Използвани бяха официални сайтове на компаниите (Nintendo, FromSoftware, Bethesda, Mojang, Larian и др.), енциклопедични източници за проверка на дати и платформи (например Wikipedia), спецификациите на W3C за XML, XML Schema и XSLT, документацията на \texttt{libxml2}/\texttt{xmllint}, както и курсови материали по „XML технологии за семантичен Уеб“. Използваните източници:
