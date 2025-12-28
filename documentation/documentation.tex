@@ -15,6 +15,7 @@
 \usepackage{placeins}
 \usepackage{tikz}
 \usetikzlibrary{shapes.arrows, positioning}
+\usepackage{tabularx}
 
 % Header and footer
 \usepackage{fancyhdr}
@@ -310,6 +311,25 @@ xmllint --noout --schema catalog.xsd catalog.xml
 Среда: Chrome/Edge/Firefox (актуални версии), локален прост HTTP сървър при нужда. Сценарии: сортиране по дата (ISO), търсене с главни/малки букви, филтър по жанр, проверка на счупен ентитет (очаквана грешка при валидация), липсващ жанр (очакван отказ от XSD). Препоръчителна автоматизация: \texttt{make validate} с \texttt{xmllint --noout --schema catalog.xsd catalog.xml} и \texttt{xsltproc catalog.xsl catalog.xml > /tmp/out.html}.
 Допълнително бяха проверени: коректно парсиране на ISO дати при сортиране; устойчивост на търсачката към главни/малки букви; липса на счупени \texttt{src} за изображения; отсъствие на грешки в конзолата. Препоръчително е при всяко добавяне на игра да се пусне \texttt{xmllint} и визуален преглед в поне два браузъра.
 
+Обобщение на изпълнените тестове:
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Категория} & \textbf{Сценарий} & \textbf{Резултат} \\
+\hline
+Валидация & \texttt{xmllint --schema catalog.xsd catalog.xml} & Успешно \\
+\hline
+Функционалност & Търсене по подниз, филтър по жанр, сортиране по дата/заглавие & ОК (Chrome/Edge/Firefox) \\
+\hline
+Медии & Зареждане на 8 PNG през \texttt{ENTITY} + \texttt{unparsed-entity-uri()} & Всички визуализирани \\
+\hline
+Негативни & Грешен \texttt{genreId} и липсващ \texttt{companyRef} (очаквана невалидност) & Успешно засечени \\
+\hline
+\end{tabularx}
+\end{table}
+
 Бъдещи тестове (ако се разширява): добавяне на mock данни с >50 записа за оценка на производителността на клиентските филтри; проверка на адаптивността на CSS на по-тесни екрани; тест с компресирани изображения за сравнение на време за зареждане; unit тест за XSD с умишлено счупени стойности (грешен \texttt{genreId}, липсващ \texttt{company}, невалидна дата).
 
 \IfFileExists{../screenshots/overview.png}{
@@ -329,7 +349,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 }{}
 
 \IfFileExists{../screenshots/bottom.png}{
-  \begin{figure}[h]
+  \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/bottom.png}
     \caption{Долен край на таблицата (последен ред).}
@@ -337,7 +357,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 }{}
 
 \IfFileExists{../screenshots/filter_action_rpg.png}{
-  \begin{figure}[h]
+  \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/filter_action_rpg.png}
     \caption{Филтър по жанр “Action RPG”.}
@@ -345,7 +365,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 }{}
 
 \IfFileExists{../screenshots/search_mario.png}{
-  \begin{figure}[h]
+  \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/search_mario.png}
     \caption{Търсене по заглавие “mario”.}
@@ -353,7 +373,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 }{}
 
 \IfFileExists{../screenshots/sort_date_desc.png}{
-  \begin{figure}[h]
+  \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/sort_date_desc.png}
     \caption{Сортиране по дата (низходящо).}
