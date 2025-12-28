@@ -204,23 +204,37 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \item При промяна на данни: обновяване на XML (+ \texttt{DOCTYPE}/XSD \texttt{enum} при ново изображение) и повторно валидиране; трансформацията остава непроменена.
 \end{enumerate}
 
-\subsection{Диаграма на потока}
-\begin{figure}[h]
+\subsection{Диаграма на валидация и рендер}
+\begin{figure}[H]
   \centering
-  \resizebox{\textwidth}{!}{%
-    \begin{tikzpicture}[node distance=1.6cm and 1.8cm, >=latex]
-      \tikzstyle{box}=[draw, rounded corners, align=center, minimum width=3.2cm, minimum height=1.2cm, fill=gray!10, text width=3.3cm]
-      \node[box] (xml) {catalog.xml\\(данни + ENTITY)};
-      \node[box, right=of xml] (xsd) {catalog.xsd\\(валидация)};
-      \node[box, right=of xsd] (xslt) {catalog.xsl\\style.css + JS};
-      \node[box, right=of xslt] (html) {HTML таблица\\+ контроли};
-      \node[box, right=of html] (browser) {Браузър};
-      \draw[->] (xml) -- node[midway, above]{\scriptsize валидация} (xsd);
-      \draw[->] (xsd) -- node[midway, above]{\scriptsize XSLT} (xslt);
-      \draw[->] (xslt) -- node[midway, above]{\scriptsize трансформация} (html);
-      \draw[->] (html) -- node[midway, above]{\scriptsize рендер} (browser);
-    \end{tikzpicture}%
-  }
+  \begin{tikzpicture}[>=latex, node distance=1.6cm and 2.1cm, scale=0.9, transform shape]
+    \tikzstyle{box}=[draw, rounded corners, align=center, minimum width=4cm, minimum height=1.4cm, fill=gray!10, text width=4.1cm, font=\footnotesize]
+    \node[box] (edit) {Автор\\редактира catalog.xml};
+    \node[box, below=of edit] (validate) {\texttt{xmllint}\\валидира срещу catalog.xsd};
+    \node[box, below=of validate] (transform) {Браузър\\прилага catalog.xsl};
+    \node[box, below=of transform] (ui) {HTML + CSS + JS\\филтър/търсене/сортиране};
+    \draw[->] (edit) -- node[midway, right]{\scriptsize данни} (validate);
+    \draw[->] (validate) -- node[midway, right]{\scriptsize валидно?} (transform);
+    \draw[->] (transform) -- node[midway, right]{\scriptsize рендер} (ui);
+  \end{tikzpicture}
+  \caption{Поток при актуализация: редакция → валидация с \texttt{xmllint} → XSLT трансформация в браузър → интерактивен интерфейс.}
+\end{figure}
+
+\subsection{Диаграма на потока}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[>=latex, node distance=1.6cm and 2.1cm, scale=0.9, transform shape]
+    \tikzstyle{box}=[draw, rounded corners, align=center, minimum width=4cm, minimum height=1.4cm, fill=gray!10, text width=4.1cm, font=\footnotesize]
+    \node[box] (xml) {catalog.xml\\(данни + ENTITY)};
+    \node[box, below=of xml] (xsd) {catalog.xsd\\(валидация)};
+    \node[box, below=of xsd] (xslt) {catalog.xsl\\style.css + JS};
+    \node[box, below=of xslt] (html) {HTML таблица\\+ контроли};
+    \node[box, below=of html] (browser) {Браузър};
+    \draw[->] (xml) -- node[midway, right]{\scriptsize валидация} (xsd);
+    \draw[->] (xsd) -- node[midway, right]{\scriptsize XSLT} (xslt);
+    \draw[->] (xslt) -- node[midway, right]{\scriptsize трансформация} (html);
+    \draw[->] (html) -- node[midway, right]{\scriptsize рендер} (browser);
+  \end{tikzpicture}
   \caption{Еднопосочен поток: данни → валидация → трансформация → визуализация в браузър.}
 \end{figure}
 
