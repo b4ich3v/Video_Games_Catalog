@@ -11,6 +11,8 @@
 \geometry{margin=2.5cm}
 \usepackage{microtype}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{shapes.arrows, positioning}
 
 % Header and footer
 \usepackage{fancyhdr}
@@ -182,12 +184,32 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \item При промяна на данни: обновяване на XML (+ \texttt{DOCTYPE}/XSD \texttt{enum} при ново изображение) и повторно валидиране; трансформацията остава непроменена.
 \end{enumerate}
 
+\subsection{Диаграма на потока}
+\begin{figure}[h]
+  \centering
+  \resizebox{\textwidth}{!}{%
+    \begin{tikzpicture}[node distance=1.6cm and 1.8cm, >=latex]
+      \tikzstyle{box}=[draw, rounded corners, align=center, minimum width=3.2cm, minimum height=1.2cm, fill=gray!10, text width=3.3cm]
+      \node[box] (xml) {catalog.xml\\(данни + ENTITY)};
+      \node[box, right=of xml] (xsd) {catalog.xsd\\(валидация)};
+      \node[box, right=of xsd] (xslt) {catalog.xsl\\style.css + JS};
+      \node[box, right=of xslt] (html) {HTML таблица\\+ контроли};
+      \node[box, right=of html] (browser) {Браузър};
+      \draw[->] (xml) -- node[midway, above]{\scriptsize валидация} (xsd);
+      \draw[->] (xsd) -- node[midway, above]{\scriptsize XSLT} (xslt);
+      \draw[->] (xslt) -- node[midway, above]{\scriptsize трансформация} (html);
+      \draw[->] (html) -- node[midway, above]{\scriptsize рендер} (browser);
+    \end{tikzpicture}%
+  }
+  \caption{Еднопосочен поток: данни → валидация → трансформация → визуализация в браузър.}
+\end{figure}
+
 \subsection{Разширяемост и алтернативи}
 \textbf{Разширения}: поджанрове и PEGI/ESRB рейтинги; филтри по платформи и диапазон дати; PDF изход чрез XSL‑FO; локализация на интерфейса; по‑строга типизация на платформи чрез отделен \texttt{enum}/колекция; интеграция с външни API. \textbf{Алтернативи}: JSON/HTML без XSLT (по‑малко демонстрация на XML трансформации); бекенд/БД (по‑тежка инфраструктура); външни шрифтове/фреймуърци (добавят зависимости).
 
 \subsection{Рискове и ограничения}
 \begin{itemize}[topsep=0pt]
-  \item \textbf{Поддръжка на XSLT}: различните браузъри имат дребни разлики; статичният \texttt{test\_output.html} служи като fallback.
+  \item \textbf{Поддръжка на XSLT}: различните браузъри имат дребни разлики; при нужда може да се генерира статичен HTML с \texttt{xsltproc}.
   \item \textbf{Ръчна актуализация}: данните се обновяват ръчно; липсва автоматично синхронизиране с външни източници.
   \item \textbf{Размер на изображенията}: PNG файловете са 1.5–3.2 MB; при бавна мрежа зареждането може да се усеща. Опция: компресия/thumbnail.
   \item \textbf{Валидиране}: пропуск в \texttt{DOCTYPE}/XSD enum води до невалиден \texttt{@image}; checklist в апендикса намалява риска.
@@ -328,10 +350,10 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \section{Апендикс}
 \label{sec:appendix}
 \begin{itemize}
-  \item \textbf{Файлова структура} – \texttt{catalog.xml}, \texttt{catalog.xsd}, \texttt{catalog.xsl}, \texttt{style.css}, \texttt{test\_output.html}, \texttt{README.md}, \texttt{course\_project\_report.md} и директория \texttt{images/} с осем PNG.
+  \item \textbf{Файлова структура} – \texttt{catalog.xml}, \texttt{catalog.xsd}, \texttt{catalog.xsl}, \texttt{style.css}, директории \texttt{images/} (осем PNG) и \texttt{screenshots/}, \texttt{course\_project\_document\_improved.tex}.
   \item \textbf{Валидация}: \texttt{xmllint --noout --schema catalog.xsd catalog.xml}.
 \item \textbf{Трансформация извън браузър}: \texttt{xsltproc catalog.xsl catalog.xml > output.html}.
-\item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{test\_output.html} (референтен резултат), \texttt{course\_project\_report.md}/\texttt{course\_project\_document\_improved.tex} (документация).
+\item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{course\_project\_document\_improved.tex} (документация).
   \item \textbf{Workflow checklist}: добави/актуализирай данни в XML; обнови \texttt{DOCTYPE}/XSD enum при ново изображение; пусни \texttt{xmllint}; провери визуално в браузър; при нужда генерирай статичен HTML с \texttt{xsltproc}.
   \item \textbf{Допълнителни материали}: екранни снимки, инструкции за локално отваряне (\texttt{python -m http.server 8000} и \url{http://localhost:8000/catalog.xml}) и др.
 \end{itemize}
