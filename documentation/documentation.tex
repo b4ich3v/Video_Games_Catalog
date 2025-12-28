@@ -12,6 +12,7 @@
 \usepackage{microtype}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{placeins}
 \usepackage{tikz}
 \usetikzlibrary{shapes.arrows, positioning}
 
@@ -143,7 +144,7 @@
 
 \textbf{Примерен фрагмент (game):}
 \IfFileExists{../screenshots/xml_fragment_game3.png}{
-  \begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/xml_fragment_game3.png}
     \caption{XML фрагмент за \texttt{game3} (DOOM Eternal) с атрибути и компании.}
@@ -254,7 +255,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 Дизайнът демонстрира цялостна XML-първа архитектура: дефиниране и валидиране на структурата, използване на непарснати ентитети за графика, трансформация с XSLT и клиентска интерактивност с JavaScript, оформена с CSS. Връзките между жанрове, компании и игри са строго типизирани чрез \texttt{key}/\texttt{keyref} и \texttt{ID}/\texttt{IDREF}, а изображенията са управлявани през \texttt{ENTITY} декларации.
 
 \IfFileExists{../screenshots/xsl_snippet.png}{
-  \begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/xsl_snippet.png}
     \caption{XSLT: заглавна част на таблицата и начало на итерацията върху \texttt{games/game}.}
@@ -262,7 +263,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 }{}
 
 \IfFileExists{../screenshots/xsl_snippet_2.png}{
-  \begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/xsl_snippet_2.png}
     \caption{XSLT: рендериране на компании, жанрове и описание (продължение).}
@@ -270,7 +271,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 }{}
 
 \IfFileExists{../screenshots/xsl_snippet_3.png}{
-  \begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/xsl_snippet_3.png}
     \caption{XSLT: долна част на тялото на таблицата и завършване на редовете.}
@@ -278,7 +279,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 }{}
 
 \IfFileExists{../screenshots/js_filter_sort.png}{
-  \begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/js_filter_sort.png}
     \caption{JavaScript: функции \texttt{filterTable()} и \texttt{sortTable()}.}
@@ -286,18 +287,17 @@ xmllint --noout --schema catalog.xsd catalog.xml
 }{}
 
 \IfFileExists{../screenshots/css_snippet.png}{
-  \begin{figure}[h]
+  \begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/css_snippet.png}
     \caption{CSS: стилове за контролите и табличното оформление.}
   \end{figure}
 }{}
+\FloatBarrier
 
 \section{Използване на изкуствен интелект}
 \label{sec:ai}
-Изкуственият интелект бе използван като асистент при планиране, генериране на чернови и проверка на формулировки. Модел от типа LLM (GPT‑семейство) беше подканван с ясни ограничения: жанрове, роли developer/publisher, ISO дати, UTF‑8, непарснати \texttt{ENTITY} имена за изображения, както и указания за структурата на XML/XSD/XSLT. Генерираните текстове (резюмета, описания, документация) бяха преглеждани и редактирани ръчно; кодът (XML/XSD/XSLT/CSS/JS) беше проверен за синтактична коректност и съвместимост. За изображения се използваха стилизирани/генерирани варианти, за да се избегнат авторски права. SWOT: Strengths – бързо съдържание и консистентна структура; Weaknesses – нужда от ръчна проверка; Opportunities – разширяване с рейтинги, интеграции, локализация; Threats – остаряване на данни и варираща XSLT поддръжка.
-
-Примери за употреба: автогенерация на резюмета на игрите, предложение за структурата на XSLT/CSS, както и идеи за JS филтър/сортиране. Всяко предложение бе валидирано срещу факти и учебните изисквания; неточности (дати, платформи) бяха коригирани ръчно. AI не замества проверката на схема и ключове, а служи като ускорител за текстовото съдържание и оформление.
+Изкуственият интелект беше използван ограничено – основно като помощник за формулиране на резюмета и идеи за структура (XSLT/CSS/JS), без да се генерира или внедрява код директно. Всички предложения бяха проверени и коригирани ръчно спрямо фактите и учебните изисквания; валидирането и архитектурните решения остават изцяло човешки контролирани.
 
 \section{Тестване}
 \label{sec:testing}
@@ -313,7 +313,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 Бъдещи тестове (ако се разширява): добавяне на mock данни с >50 записа за оценка на производителността на клиентските филтри; проверка на адаптивността на CSS на по-тесни екрани; тест с компресирани изображения за сравнение на време за зареждане; unit тест за XSD с умишлено счупени стойности (грешен \texttt{genreId}, липсващ \texttt{company}, невалидна дата).
 
 \IfFileExists{../screenshots/overview.png}{
-  \begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/overview.png}
     \caption{Преглед на каталога с активни контроли (начален изглед).}
@@ -321,7 +321,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 }{}
 
 \IfFileExists{../screenshots/midpage.png}{
-  \begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.95\textwidth]{../screenshots/midpage.png}
     \caption{Средна част на таблицата (редове 4–7).}
