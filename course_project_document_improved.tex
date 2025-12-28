@@ -11,6 +11,7 @@
 \geometry{margin=2.5cm}
 \usepackage{microtype}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{tikz}
 \usetikzlibrary{shapes.arrows, positioning}
 
@@ -120,6 +121,25 @@
   \item \texttt{game7} – Super Mario Odyssey, жанр Platformer, Nintendo EPD / 1-Up Studio / Nintendo, дата 2017-10-27.
   \item \texttt{game8} – Baldur's Gate 3, жанр Role-playing, Larian Studios (dev/pub), дата 2023-08-03.
 \end{itemize}
+
+\subsection{Диаграма на модела (ER)}
+\begin{figure}[H]
+  \centering
+  \resizebox{\textwidth}{!}{%
+    \begin{tikzpicture}[>=latex, node distance=2.1cm and 3.2cm]
+      \tikzstyle{entity}=[draw, rounded corners, align=left, minimum width=4.2cm, minimum height=1.6cm, fill=gray!10, font=\footnotesize]
+      \node[entity] (genre) {\textbf{Genre}\\id: ID\\name: string};
+      \node[entity, right=of genre] (game) {\textbf{Game}\\id: ID\\genreId: IDREF\\image: enum\\releaseDate: date\\title/platforms/summary\\companies/companyRef};
+      \node[entity, right=of game] (company) {\textbf{Company}\\name: string\\country: string\\role: string\\\textit{key: (name, role)}};
+      \node[entity, below=1.6cm of game] (image) {\textbf{ImageEntityType}\\enum: totk, eldenring,\\doometernal, minecraft,\\tetris, witcher3, mario, bg3};
+
+      \draw[->] (genre) -- node[midway, above]{\scriptsize 1..*} node[midway, below]{\scriptsize genreId} (game);
+      \draw[->] (game) -- node[midway, above]{\scriptsize companyRef (0..*)} (company);
+      \draw[->] (image) -- node[midway, right]{\scriptsize enum} (game);
+    \end{tikzpicture}%
+  }
+  \caption{ER-скица: жанр \textrightarrow{} игри (1..*), игри \textrightarrow{} компании чрез \texttt{companyRef}, изображение като енумирана стойност.}
+\end{figure}
 
 \textbf{Примерен фрагмент (game):}
 \IfFileExists{screenshots/xml_fragment_game3.png}{
