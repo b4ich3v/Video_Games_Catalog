@@ -16,6 +16,7 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes.arrows, positioning}
 \usepackage{tabularx}
+\usepackage[table]{xcolor}
 
 % Header and footer
 \usepackage{fancyhdr}
@@ -72,7 +73,7 @@
 \small
 \begin{tabularx}{0.95\textwidth}{|l|X|}
 \hline
-\textbf{Цел} & \textbf{Реализация} \\
+\rowcolor{gray!15}\textbf{Цел} & \textbf{Реализация} \\
 \hline
 Стриктна валидация & \texttt{xmllint --schema catalog.xsd catalog.xml}, ключове/референции, enum за ENTITY \\
 \hline
@@ -161,16 +162,16 @@
 \begin{figure}[H]
   \centering
   \resizebox{\textwidth}{!}{%
-    \begin{tikzpicture}[>=latex, node distance=2.1cm and 3.2cm]
-      \tikzstyle{entity}=[draw, rounded corners, align=left, minimum width=4.2cm, minimum height=1.6cm, fill=gray!10, font=\footnotesize]
+\begin{tikzpicture}[>=latex, node distance=2.1cm and 3.2cm]
+      \tikzstyle{entity}=[draw=blue!50!black, rounded corners, align=left, minimum width=4.2cm, minimum height=1.6cm, fill=blue!8, font=\footnotesize]
       \node[entity] (genre) {\textbf{Genre}\\id: ID\\name: string};
       \node[entity, right=of genre] (game) {\textbf{Game}\\id: ID\\genreId: IDREF\\image: enum\\releaseDate: date\\title/platforms/summary\\companies/companyRef};
-      \node[entity, right=of game] (company) {\textbf{Company}\\name: string\\country: string\\role: string\\key: (name, role)};
-      \node[entity, below=1.6cm of game] (image) {\textbf{ImageEntityType}\\enum: totk, eldenring,\\doometernal, minecraft,\\tetris, witcher3, mario, bg3};
+      \node[entity, right=of game, fill=orange!10, draw=orange!60!black] (company) {\textbf{Company}\\name: string\\country: string\\role: string\\key: (name, role)};
+      \node[entity, below=1.6cm of game, fill=green!10, draw=green!50!black] (image) {\textbf{ImageEntityType}\\enum: totk, eldenring,\\doometernal, minecraft,\\tetris, witcher3, mario, bg3};
 
-      \draw[->] (genre) -- node[midway, above]{\scriptsize 1..*} node[midway, below]{\scriptsize genreId} (game);
-      \draw[->] (game) -- node[midway, above]{\scriptsize companyRef (0..*)} (company);
-      \draw[->] (image) -- node[midway, right]{\scriptsize enum} (game);
+      \draw[->, draw=blue!60!black] (genre) -- node[midway, above]{\scriptsize 1..*} node[midway, below]{\scriptsize genreId} (game);
+      \draw[->, draw=orange!70!black] (game) -- node[midway, above]{\scriptsize companyRef (0..*)} (company);
+      \draw[->, draw=green!60!black] (image) -- node[midway, right]{\scriptsize enum} (game);
     \end{tikzpicture}%
   }
   \caption{ER-скица: жанр \textrightarrow{} игри (1..*), игри \textrightarrow{} компании чрез \texttt{companyRef}, изображение като енумирана стойност.}
@@ -209,7 +210,7 @@
 \small
 \begin{tabularx}{0.8\textwidth}{|l|X|}
 \hline
-\textbf{Файл} & \textbf{Роля} \\
+\rowcolor{gray!15}\textbf{Файл} & \textbf{Роля} \\
 \hline
 catalog.xml & Данни: жанрове, компании, игри, връзки към изображения (ENTITY) \\
 \hline
@@ -251,7 +252,7 @@ style.css & Стилове за таблицата, контролите и из
 \small
 \begin{tabularx}{0.9\textwidth}{|l|X|X|}
 \hline
-\textbf{Име} & \textbf{Тип} & \textbf{Обхват / Значение} \\
+\rowcolor{gray!15}\textbf{Име} & \textbf{Тип} & \textbf{Обхват / Значение} \\
 \hline
 genreKey & \texttt{xs:key} върху \texttt{genres/genre/@id} & Гарантира уникални жанрове; \texttt{game/@genreId} сочи към него. \\
 \hline
@@ -285,7 +286,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \begin{figure}[H]
   \centering
 \begin{tikzpicture}[>=latex, node distance=1.6cm and 2.1cm, scale=0.9, transform shape]
-    \tikzstyle{box}=[draw, rounded corners, align=center, minimum width=4cm, minimum height=1.4cm, fill=gray!10, text width=4.1cm, font=\footnotesize]
+    \tikzstyle{box}=[draw=blue!50!black, rounded corners, align=center, minimum width=4cm, minimum height=1.4cm, fill=blue!8, text width=4.1cm, font=\footnotesize]
     \node[box] (edit) {Автор\\редактира catalog.xml};
     \node[box, below=of edit] (validate) {\texttt{xmllint}\\валидира срещу catalog.xsd};
     \node[box, below=of validate] (transform) {Браузър\\прилага catalog.xsl};
@@ -303,12 +304,12 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}[>=latex, node distance=1.0cm and 2.0cm, scale=0.85, transform shape]
-    \tikzstyle{box}=[draw, rounded corners, align=center, minimum width=3.5cm, minimum height=1.2cm, fill=gray!10, text width=3.7cm, font=\footnotesize]
+    \tikzstyle{box}=[draw=blue!50!black, rounded corners, align=center, minimum width=3.5cm, minimum height=1.2cm, fill=blue!8, text width=3.7cm, font=\footnotesize]
     \node[box] (edit) {Редакция на\\\texttt{catalog.xml}};
     \node[box, below=of edit] (validate) {\texttt{xmllint}\\валидация};
-    \node[box, below left=1.2cm and 1.5cm of validate] (error) {Грешка\\(key/keyref, enum, дата)};
-    \node[box, below right=1.2cm and 1.5cm of validate] (ok) {Валидно};
-    \node[box, below=of error] (fix) {Корекция на данните};
+    \node[box, below left=1.2cm and 1.5cm of validate, fill=red!10, draw=red!60!black] (error) {Грешка\\(key/keyref, enum, дата)};
+    \node[box, below right=1.2cm and 1.5cm of validate, fill=green!12, draw=green!60!black] (ok) {Валидно};
+    \node[box, below=of error, fill=orange!10, draw=orange!70!black] (fix) {Корекция на данните};
     \node[box, below=of ok] (transform) {XSLT трансформация\\+ HTML/JS/CSS};
     \draw[->] (edit) -- (validate);
     \draw[->] (validate) -- node[pos=0.45, above, sloped]{\scriptsize fail} (error);
@@ -332,8 +333,8 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \subsection{Диаграма на потока}
 \begin{figure}[H]
   \centering
-  \begin{tikzpicture}[>=latex, node distance=1.6cm and 2.1cm, scale=0.9, transform shape]
-    \tikzstyle{box}=[draw, rounded corners, align=center, minimum width=4cm, minimum height=1.4cm, fill=gray!10, text width=4.1cm, font=\footnotesize]
+\begin{tikzpicture}[>=latex, node distance=1.6cm and 2.1cm, scale=0.9, transform shape]
+    \tikzstyle{box}=[draw=blue!50!black, rounded corners, align=center, minimum width=4cm, minimum height=1.4cm, fill=blue!8, text width=4.1cm, font=\footnotesize]
     \node[box] (xml) {catalog.xml\\(данни + ENTITY)};
     \node[box, below=of xml] (xsd) {catalog.xsd\\(валидация)};
     \node[box, below=of xsd] (xslt) {catalog.xsl\\style.css + JS};
@@ -442,7 +443,7 @@ make serve           # python3 -m http.server 8000
 \small
 \begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
 \hline
-\textbf{Категория} & \textbf{Сценарий} & \textbf{Резултат} \\
+\rowcolor{gray!15}\textbf{Категория} & \textbf{Сценарий} & \textbf{Резултат} \\
 \hline
 Валидация & \texttt{xmllint --schema catalog.xsd catalog.xml} & Успешно \\
 \hline
@@ -463,7 +464,7 @@ make serve           # python3 -m http.server 8000
 \small
 \begin{tabularx}{\textwidth}{|l|X|X|}
 \hline
-\textbf{Сценарий} & \textbf{Стъпка} & \textbf{Очакван резултат} \\
+\rowcolor{gray!15}\textbf{Сценарий} & \textbf{Стъпка} & \textbf{Очакван резултат} \\
 \hline
 Липсващ жанр & \texttt{genreId="g999"} & \texttt{keyref gameGenreRef} грешка при \texttt{xmllint} \\
 \hline
