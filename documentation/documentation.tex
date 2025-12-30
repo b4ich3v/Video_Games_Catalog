@@ -41,34 +41,16 @@
 
 % Hyperlinks
 \usepackage[hidelinks]{hyperref}
+\usepackage[hidelinks]{hyperref}
+\usepackage{pdfpages}
 
 % Rename contents
 \renewcommand{\contentsname}{Съдържание}
 
 \begin{document}
 
-% Title page
-\begin{titlepage}
-  \vspace*{2cm}
-  \begin{center}
-    {\LARGE Софийски университет „Св. Кл. Охридски”\\[1ex]}
-    {\large Факултет по математика и информатика\\[1ex]}
-    {\large Бакалавърска програма „Софтуерно инженерство”}\\[4ex]
-    {\large Предмет: XML технологии за семантичен Уеб}\\[1ex]
-    {\large Зимен семестър, 2025/2026 год.}\\[6ex]
-    {\Large Тема №39: „Каталог на видеоигри за развлечение - 2“}\\[3ex]
-    {\large Курсов проект}\\[3ex]
-    \begin{tabular}{l}
-      Автори: \\
-      Ивайло~Кънчев, фак. номер~2MI0600305 \\
-      Йоан~Байчев, фак. номер~0MI0600328 \\
-    \end{tabular}
-    \\[5ex]
-    \vfill
-    {\large януари, 2026~г.}\\[1ex]
-    София
-  \end{center}
-\end{titlepage}
+\includepdf[pages=1,pagecommand={\thispagestyle{empty}},fitpaper=true]{documentation/XML2025_projectNo_studentNames_facNos-template.pdf}
+\clearpage
 
 \pagenumbering{roman}
 \tableofcontents
