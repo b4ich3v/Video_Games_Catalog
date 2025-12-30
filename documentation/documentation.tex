@@ -298,7 +298,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \subsection{Диаграма на валидация и рендер}
 \begin{figure}[H]
   \centering
-  \begin{tikzpicture}[>=latex, node distance=1.6cm and 2.1cm, scale=0.9, transform shape]
+\begin{tikzpicture}[>=latex, node distance=1.6cm and 2.1cm, scale=0.9, transform shape]
     \tikzstyle{box}=[draw, rounded corners, align=center, minimum width=4cm, minimum height=1.4cm, fill=gray!10, text width=4.1cm, font=\footnotesize]
     \node[box] (edit) {Автор\\редактира catalog.xml};
     \node[box, below=of edit] (validate) {\texttt{xmllint}\\валидира срещу catalog.xsd};
@@ -310,6 +310,38 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \end{tikzpicture}
   \caption{Поток при актуализация: редакция → валидация с \texttt{xmllint} → XSLT трансформация в браузър → интерактивен интерфейс.}
 \end{figure}
+\textit{Диаграмата показва типичния успешен път: редакция на данните, валидация срещу схемата и автоматична трансформация в браузъра без допълнителен бекенд.}
+
+\subsection{Негативен сценарий при валидация}
+\label{sec:negative-validation}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[>=latex, node distance=1.0cm and 2.0cm, scale=0.85, transform shape]
+    \tikzstyle{box}=[draw, rounded corners, align=center, minimum width=3.5cm, minimum height=1.2cm, fill=gray!10, text width=3.7cm, font=\footnotesize]
+    \node[box] (edit) {Редакция на\\\texttt{catalog.xml}};
+    \node[box, below=of edit] (validate) {\texttt{xmllint}\\валидация};
+    \node[box, below left=1.2cm and 1.5cm of validate] (error) {Грешка\\(key/keyref, enum, дата)};
+    \node[box, below right=1.2cm and 1.5cm of validate] (ok) {Валидно};
+    \node[box, below=of error] (fix) {Корекция на данните};
+    \node[box, below=of ok] (transform) {XSLT трансформация\\+ HTML/JS/CSS};
+    \draw[->] (edit) -- (validate);
+    \draw[->] (validate) -- node[pos=0.45, above, sloped]{\scriptsize fail} (error);
+    \draw[->] (validate) -- node[pos=0.45, above, sloped]{\scriptsize pass} (ok);
+    \draw[->] (error) -- node[midway, right]{\scriptsize поправка} (fix);
+    \draw[->] (fix) -- (validate);
+    \draw[->] (ok) -- (transform);
+  \end{tikzpicture}
+  \caption{При неуспех на XSD валидацията процесът спира, коригира се XML-ът и се валидира отново.}
+\end{figure}
+\textit{При грешка валидирането прекъсва потока; корекцията връща документа към валидно състояние преди трансформацията.}
+
+\textbf{Чести причини за провал и корекция:}
+\begin{itemize}[topsep=0pt]
+  \item Пропуснат \texttt{genreId} или грешно изписан идентификатор → добавяне/поправка в \texttt{genres} и обновяване на атрибута в \texttt{game}.
+  \item \texttt{companyRef} към несъществуваща комбинация \texttt{name+role} → добавяне на \texttt{company} или поправка на ролята (\texttt{developer} / \texttt{publisher}).
+  \item Ново изображение без актуализиран \texttt{ImageEntityType} или \texttt{DOCTYPE} ENTITY → добавяне на enumeration и ENTITY декларация.
+  \item Невалидна дата (формат YYYY-MM-DD) → поправка към ISO формат.
+\end{itemize}
 
 \subsection{Диаграма на потока}
 \begin{figure}[H]
@@ -328,6 +360,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \end{tikzpicture}
   \caption{Еднопосочен поток: данни → валидация → трансформация → визуализация в браузър.}
 \end{figure}
+\textit{Потокът е еднопосочен и файлов: от XML с ENTITY към XSD валидация, после XSLT рендер и клиентска интерактивност.}
 
 \subsection{Разширяемост и алтернативи}
 \textbf{Разширения}: поджанрове и PEGI/ESRB рейтинги; филтри по платформи и диапазон дати; PDF изход чрез XSL‑FO; локализация на интерфейса; по‑строга типизация на платформи чрез отделен \texttt{enum}/колекция; интеграция с външни API. \textbf{Алтернативи}: JSON/HTML без XSLT (по‑малко демонстрация на XML трансформации); бекенд/БД (по‑тежка инфраструктура); външни шрифтове/фреймуърци (добавят зависимости).
