@@ -125,15 +125,15 @@
 
 \textbf{Мини-сценарии (оперативни):}
 \begin{itemize}[topsep=0pt]
-  \item \emph{Добавяне на нова игра}: PNG → ENTITY в \texttt{DOCTYPE} → нова стойност в XSD enum → елемент \texttt{game} с валидни \texttt{genreId}/\texttt{companyRef} → \texttt{xmllint}.
-  \item \emph{Актуализация на изображение}: заменя се PNG + се променя SYSTEM пътят в \texttt{DOCTYPE}; XSD enum остава същия, ако името на ENTITY не се сменя.
-  \item \emph{Промяна на компании}: добавяне на \texttt{company} (\texttt{name}+\texttt{role}) преди да се реферира в \texttt{companyRef}; XSD блокира липсващи записи.
+  \item Добавяне на нова игра: PNG → ENTITY в \texttt{DOCTYPE} → нова стойност в XSD enum → елемент \texttt{game} с валидни \texttt{genreId}/\texttt{companyRef} → \texttt{xmllint}.
+  \item Актуализация на изображение: заменя се PNG + се променя SYSTEM пътят в \texttt{DOCTYPE}; XSD enum остава същия, ако името на ENTITY не се сменя.
+  \item Промяна на компании: добавяне на \texttt{company} (\texttt{name}+\texttt{role}) преди да се реферира в \texttt{companyRef}; XSD блокира липсващи записи.
 \end{itemize}
 
 \subsection{Структура на съдържанието}
 Структурата на съдържанието е описана формално в \texttt{catalog.xsd}. Моделът включва:
 \begin{itemize}[topsep=0pt]
-  \item \textbf{Жанрове} \texttt{genres/genre} – атрибути \texttt{id} (тип ID) и \texttt{name}. Жанровете са седем: \emph{Action-adventure}, \emph{Action RPG}, \emph{First-person action}, \emph{Sandbox/Survival}, \emph{Puzzle}, \emph{Platformer}, \emph{Role-playing}. Ключ \texttt{genreKey} гарантира уникалност на идентификаторите, а игрите реферират към жанровете чрез \texttt{genreId}.
+  \item \textbf{Жанрове} \texttt{genres/genre} – атрибути \texttt{id} (тип ID) и \texttt{name}. Жанровете са седем: Action-adventure, Action RPG, First-person action, Sandbox/Survival, Puzzle, Platformer, Role-playing. Ключ \texttt{genreKey} гарантира уникалност на идентификаторите, а игрите реферират към жанровете чрез \texttt{genreId}.
   \item \textbf{Компании} \texttt{companies/company} – атрибути \texttt{name}, \texttt{country} и \texttt{role}. Композитният ключ \texttt{companyKey} (\texttt{name}+\texttt{role}) позволява една компания да бъде едновременно разработчик и издател. В игрите елементът \texttt{companyRef} съдържа име и роля и се валидира чрез ключова връзка \texttt{companyRefKey}.
   \item \textbf{Игри} \texttt{games/game} – атрибути \texttt{id}, \texttt{genreId}, \texttt{image} (\texttt{ENTITY}, ограничен чрез \texttt{ImageEntityType}) и \texttt{releaseDate}. Поделементи \texttt{title}, \texttt{platforms}, \texttt{summary} и \texttt{companies/companyRef}. Структурата допуска множество разработчици и издатели, а датите са в ISO формат (YYYY-MM-DD) за улеснено сортиране.
   \item \textbf{Медийни ресурси} – в \texttt{DOCTYPE} са дефинирани непарснати ентитети (\texttt{totk}, \texttt{eldenring}, \texttt{doometernal}, \texttt{minecraft}, \texttt{tetris}, \texttt{witcher3}, \texttt{mario}, \texttt{bg3}), които сочат към PNG файлове. XSD енума \texttt{ImageEntityType} дублира тези стойности и гарантира съответствие.
@@ -183,7 +183,7 @@
       \tikzstyle{entity}=[draw, rounded corners, align=left, minimum width=4.2cm, minimum height=1.6cm, fill=gray!10, font=\footnotesize]
       \node[entity] (genre) {\textbf{Genre}\\id: ID\\name: string};
       \node[entity, right=of genre] (game) {\textbf{Game}\\id: ID\\genreId: IDREF\\image: enum\\releaseDate: date\\title/platforms/summary\\companies/companyRef};
-      \node[entity, right=of game] (company) {\textbf{Company}\\name: string\\country: string\\role: string\\\textit{key: (name, role)}};
+      \node[entity, right=of game] (company) {\textbf{Company}\\name: string\\country: string\\role: string\\key: (name, role)};
       \node[entity, below=1.6cm of game] (image) {\textbf{ImageEntityType}\\enum: totk, eldenring,\\doometernal, minecraft,\\tetris, witcher3, mario, bg3};
 
       \draw[->] (genre) -- node[midway, above]{\scriptsize 1..*} node[midway, below]{\scriptsize genreId} (game);
@@ -201,7 +201,7 @@
     \includegraphics[width=0.95\textwidth]{../screenshots/xml_fragment_game3.png}
     \caption{XML фрагмент за \texttt{game3} (DOOM Eternal) с атрибути и компании.}
   \end{figure}
-}{\textit{(Добавете файл ../screenshots/xml_fragment_game3.png, за да се вмъкне автоматично.)}}
+}{(Добавете файл ../screenshots/xml_fragment_game3.png, за да се вмъкне автоматично.)}
 
 \textbf{Процедура при добавяне на нова игра (поддръжка):}
 \begin{enumerate}[leftmargin=2em]
@@ -314,7 +314,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \end{tikzpicture}
   \caption{Поток при актуализация: редакция → валидация с \texttt{xmllint} → XSLT трансформация в браузър → интерактивен интерфейс.}
 \end{figure}
-\textit{Диаграмата показва типичния успешен път: редакция на данните, валидация срещу схемата и автоматична трансформация в браузъра без допълнителен бекенд.}
+Диаграмата показва типичния успешен път: редакция на данните, валидация срещу схемата и автоматична трансформация в браузъра без допълнителен бекенд.
 
 \subsection{Негативен сценарий при валидация}
 \label{sec:negative-validation}
@@ -337,7 +337,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \end{tikzpicture}
   \caption{При неуспех на XSD валидацията процесът спира, коригира се XML-ът и се валидира отново.}
 \end{figure}
-\textit{При грешка валидирането прекъсва потока; корекцията връща документа към валидно състояние преди трансформацията.}
+При грешка валидирането прекъсва потока; корекцията връща документа към валидно състояние преди трансформацията.
 
 \textbf{Чести причини за провал и корекция:}
 \begin{itemize}[topsep=0pt]
@@ -364,7 +364,7 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \end{tikzpicture}
   \caption{Еднопосочен поток: данни → валидация → трансформация → визуализация в браузър.}
 \end{figure}
-\textit{Потокът е еднопосочен и файлов: от XML с ENTITY към XSD валидация, после XSLT рендер и клиентска интерактивност.}
+Потокът е еднопосочен и файлов: от XML с ENTITY към XSD валидация, после XSLT рендер и клиентска интерактивност.
 
 \subsection{Разширяемост и алтернативи}
 \textbf{Разширения}: поджанрове и PEGI/ESRB рейтинги; филтри по платформи и диапазон дати; PDF изход чрез XSL‑FO; локализация на интерфейса; по‑строга типизация на платформи чрез отделен \texttt{enum}/колекция; интеграция с външни API. \textbf{Алтернативи}: JSON/HTML без XSLT (по‑малко демонстрация на XML трансформации); бекенд/БД (по‑тежка инфраструктура); външни шрифтове/фреймуърци (добавят зависимости).
@@ -614,7 +614,7 @@ make serve           # python3 -m http.server 8000
 \item \textbf{Допълнителни материали}: екранни снимки, инструкции за локално отваряне (\texttt{python -m http.server 8000} и \url{http://localhost:8000/catalog.xml}) и др.
 \item \textbf{Локално стартиране без риск за файловата система}:
   \begin{itemize}[leftmargin=1.5em]
-    \item VS Code Live Server: инсталирай разширението, отвори папката, натисни \emph{Go Live}, зареди \url{http://localhost:5500/catalog.xml}.
+    \item VS Code Live Server: инсталирай разширението, отвори папката, натисни Go Live, зареди \url{http://localhost:5500/catalog.xml}.
     \item Python HTTP server: \texttt{python3 -m http.server 8000}, после \url{http://localhost:8000/catalog.xml}.
   \end{itemize}
   Това елиминира ограниченията за достъп до локални ресурси в съвременните браузъри.
