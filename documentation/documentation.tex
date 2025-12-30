@@ -82,6 +82,27 @@
 
 Останалата част от документа е структурирана така: раздел \ref{sec:analysis} описва работния процес и структурата на съдържанието; раздел \ref{sec:design} разглежда дизайна и архитектурата на решението; раздел \ref{sec:ai} описва използването на изкуствен интелект в процеса; раздел \ref{sec:testing} представя тестването и резултатите; раздел \ref{sec:conclusion} обобщава заключенията и очертава възможности за бъдещо развитие; раздели \ref{sec:work-distribution}–\ref{sec:appendix} съдържат разпределението на работата, източниците и апендикси.
 
+\textbf{Цели и критерии за успех:}
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{0.95\textwidth}{|l|X|}
+\hline
+\textbf{Цел} & \textbf{Реализация} \\
+\hline
+Стриктна валидация & \texttt{xmllint --schema catalog.xsd catalog.xml}, ключове/референции, enum за ENTITY \\
+\hline
+Клиентска интерактивност & XSLT генерира HTML + JS (търсене, филтър, сортиране) \\
+\hline
+Графика през ENTITY & Непарснати PNG ентитети + \texttt{unparsed-entity-uri()} \\
+\hline
+Офлайн работа & Един XML + XSD + XSLT + CSS + PNG, без бекенд; може през локален сървър \\
+\hline
+Разширяемост & Добавяне на игра/изображение с обновяване на DOCTYPE/XSD enum, без промяна в XSLT/JS \\
+\hline
+\end{tabularx}
+\end{table}
+
 \section{Анализ на решението}
 \label{sec:analysis}
 
@@ -100,6 +121,13 @@
 
 Предимства на този поток: няма зависимости от сървър, така че каталогът се пренася и отваря офлайн; валидирането се случва преди рендериране, което гарантира качеството на данните; обновяването е локализирано в един XML файл плюс, при нужда, DOCTYPE/XSD. Ограничения: при добавяне на много ресурси размерът на XML и изображенията може да забави зареждането; филтър/търсене работят в браузъра и не е оптимизирано за хиляди записи (но е достатъчно за учебния обем).
 
+\textbf{Мини-сценарии (оперативни):}
+\begin{itemize}[topsep=0pt]
+  \item \emph{Добавяне на нова игра}: PNG → ENTITY в \texttt{DOCTYPE} → нова стойност в XSD enum → елемент \texttt{game} с валидни \texttt{genreId}/\texttt{companyRef} → \texttt{xmllint}.
+  \item \emph{Актуализация на изображение}: заменя се PNG + се променя SYSTEM пътят в \texttt{DOCTYPE}; XSD enum остава същия, ако името на ENTITY не се сменя.
+  \item \emph{Промяна на компании}: добавяне на \texttt{company} (\texttt{name}+\texttt{role}) преди да се реферира в \texttt{companyRef}; XSD блокира липсващи записи.
+\end{itemize}
+
 \subsection{Структура на съдържанието}
 Структурата на съдържанието е описана формално в \texttt{catalog.xsd}. Моделът включва:
 \begin{itemize}[topsep=0pt]
@@ -111,6 +139,27 @@
 Връзките между колекциите се реализират чрез \texttt{ID}/\texttt{IDREF} и \texttt{key}/\texttt{keyref}, което позволява автоматична проверка за консистентност. Форматът е лесно разширяем: добавяне на нови игри, жанрове или компании изисква само попълване на XML-а и, при ново изображение, обновяване на \texttt{DOCTYPE}/XSD.
 
 Проверки за консистентност: дублиране на жанр или компания по роля се блокира от ключовете; липсващ \texttt{genreId} се улавя от \texttt{gameGenreRef}; грешен \texttt{image} се улавя от \texttt{ImageEntityType}; неправилно въведена дата (не-ISO) се отхвърля от \texttt{xs:date}. Така всяка връзка има формална защита, а данните остават „самодокументирани“ чрез схемата.
+
+\textbf{Примери за валидни/невалидни данни и очаквана реакция:}
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Поле} & \textbf{Невалидно} & \textbf{Резултат от XSD/валидатор} \\
+\hline
+\texttt{game/@genreId} & Стойност, която не съществува в \texttt{genres/genre/@id} & \texttt{keyref gameGenreRef: Element 'game', attribute 'genreId'} нарушава ключ \\
+\hline
+\texttt{companyRef/@name+@role} & Компания липсва или роля не съвпада & \texttt{keyref companyRefKey} нарушен \\
+\hline
+\texttt{game/@image} & Стойност извън енума (напр. \texttt{halo}) & \texttt{cvc-enumeration-valid} грешка \\
+\hline
+\texttt{game/@releaseDate} & Неформатна дата (напр. 2023/12/01) & \texttt{cvc-datatype-valid.1.2.1}: value is not facet-valid with respect to pattern \\
+\hline
+\texttt{genres/genre/@id} & Повтарящ се ID (дубликат) & \texttt{Duplicate unique value} за \texttt{genreKey} \\
+\hline
+\end{tabularx}
+\end{table}
 
 \textbf{Обзор на игрите (кратко):}
 \begin{itemize}[topsep=0pt]
@@ -351,6 +400,13 @@ xmllint --noout --schema catalog.xsd catalog.xml
 Среда: Chrome/Edge/Firefox (актуални версии), локален прост HTTP сървър при нужда. Сценарии: сортиране по дата (ISO), търсене с главни/малки букви, филтър по жанр, проверка на счупен ентитет (очаквана грешка при валидация), липсващ жанр (очакван отказ от XSD). Препоръчителна автоматизация: \texttt{make validate} с \texttt{xmllint --noout --schema catalog.xsd catalog.xml} и \texttt{xsltproc catalog.xsl catalog.xml > /tmp/out.html}.
 Допълнително бяха проверени: коректно парсиране на ISO дати при сортиране; устойчивост на търсачката към главни/малки букви; липса на счупени \texttt{src} за изображения; отсъствие на грешки в конзолата. Препоръчително е при всяко добавяне на игра да се пусне \texttt{xmllint} и визуален преглед в поне два браузъра.
 
+\textbf{Автоматизация (примерни команди):}
+\begin{verbatim}
+make validate        # xmllint --noout --schema catalog.xsd catalog.xml
+make html            # xsltproc catalog.xsl catalog.xml > build/output.html
+make serve           # python3 -m http.server 8000
+\end{verbatim}
+
 Обобщение на изпълнените тестове:
 \begin{table}[H]
 \centering
@@ -371,6 +427,25 @@ xmllint --noout --schema catalog.xsd catalog.xml
 \end{table}
 
 Негативните тестове се изпълняват ръчно чрез временно въвеждане на грешни стойности (несъществуващ жанр/компания, празно \texttt{companyRef}, невалидна дата), след което \texttt{xmllint} трябва да прекрати с грешка. Във визуалния слой се проверява, че при липсващо изображение XSD блокира стойността на атрибут \texttt{image}.
+
+\textbf{Негативни тестове (примерни) и очакван резултат:}
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\textwidth}{|l|X|X|}
+\hline
+\textbf{Сценарий} & \textbf{Стъпка} & \textbf{Очакван резултат} \\
+\hline
+Липсващ жанр & \texttt{genreId="g999"} & \texttt{keyref gameGenreRef} грешка при \texttt{xmllint} \\
+\hline
+Несъществуваща компания & \texttt{companyRef name="Foo" role="developer"} & \texttt{keyref companyRefKey} грешка \\
+\hline
+Невалидно изображение & \texttt{image="halo"} & \texttt{cvc-enumeration-valid} грешка \\
+\hline
+Невалидна дата & \texttt{releaseDate="2023/12/01"} & \texttt{cvc-datatype-valid.1.2.1} за \texttt{xs:date} \\
+\hline
+\end{tabularx}
+\end{table}
 
 Бъдещи тестове (ако се разширява): добавяне на mock данни с >50 записа за оценка на производителността на клиентските филтри; проверка на адаптивността на CSS на по-тесни екрани; тест с компресирани изображения за сравнение на време за зареждане; unit тест за XSD с умишлено счупени стойности (грешен \texttt{genreId}, липсващ \texttt{company}, невалидна дата).
 
@@ -474,7 +549,14 @@ xmllint --noout --schema catalog.xsd catalog.xml
   \item \textbf{Валидация}: \texttt{xmllint --noout --schema catalog.xsd catalog.xml}.
 \item \textbf{Трансформация извън браузър}: \texttt{xsltproc catalog.xsl catalog.xml > output.html}.
   \item \textbf{Роля на файловете}: \texttt{catalog.xml} (данни), \texttt{catalog.xsd} (схема и ограничения), \texttt{catalog.xsl} (трансформация + JS), \texttt{style.css} (визуален стил), \texttt{images/} (медии), \texttt{documentation/documentation.tex} (документация).
-\item \textbf{Workflow checklist}: добави/актуализирай данни в XML; обнови \texttt{DOCTYPE}/XSD enum при ново изображение; пусни \texttt{xmllint}; провери визуално в браузър; при нужда генерирай статичен HTML с \texttt{xsltproc}.
+\item \textbf{Workflow checklist}: добави/актуализирай данни в XML; обнови \texttt{DOCTYPE}/XSD enum при ново изображение; пусни \texttt{xmllint}; провери визуално в браузър; при нужда генерирай статичен HTML с \texttt{xsltproc}; при много нови изображения помисли за компресия/thumbnail.
+\item \textbf{Негативни проверки}: временно въведи грешен \texttt{genreId} или \texttt{image} и очаквай отказ от \texttt{xmllint}; върни коректните стойности след теста.
+\item \textbf{Полезни команди}:
+  \begin{itemize}[leftmargin=1.5em]
+    \item \texttt{xmllint --schema catalog.xsd catalog.xml} – валидация.
+    \item \texttt{xsltproc catalog.xsl catalog.xml > build/output.html} – статичен HTML.
+    \item \texttt{python3 -m http.server 8000} – локален сървър за преглед.
+  \end{itemize}
 \item \textbf{Допълнителни материали}: екранни снимки, инструкции за локално отваряне (\texttt{python -m http.server 8000} и \url{http://localhost:8000/catalog.xml}) и др.
 \item \textbf{Локално стартиране без риск за файловата система}:
   \begin{itemize}[leftmargin=1.5em]
