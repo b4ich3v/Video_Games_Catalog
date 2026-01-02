@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  XSLT stylesheet that transforms catalog.xml into an interactive HTML document.
-  It generates a table of video games with sorting and filtering through JavaScript.
-  Images are loaded via unparsed-entity-uri() and applied as <img> sources.
--->
+
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output method="html" encoding="UTF-8" doctype-system="about:legacy-compat"/>
 
-  <!-- Root template -->
   <xsl:template match="/catalog">
     <html lang="en">
       <head>
@@ -18,7 +13,6 @@
       <body>
         <h1>Video Game Catalog</h1>
 
-        <!-- Genre filter -->
         <div class="controls">
           <label for="genreFilter">Filter by genre:</label>
           <select id="genreFilter" onchange="filterTable()">
@@ -70,12 +64,10 @@
                   <xsl:value-of select="../../genres/genre[@id=$gid]/@name"/>
                 </td>
 
-                <!-- Platforms -->
                 <td class="platforms">
                   <xsl:value-of select="platforms"/>
                 </td>
 
-                <!-- Developers -->
                 <td class="developers">
                   <xsl:for-each select="companies/companyRef[@role='developer']">
                     <xsl:if test="position() &gt; 1">, </xsl:if>
@@ -83,7 +75,6 @@
                   </xsl:for-each>
                 </td>
 
-                <!-- Publishers -->
                 <td class="publishers">
                   <xsl:for-each select="companies/companyRef[@role='publisher']">
                     <xsl:if test="position() &gt; 1">, </xsl:if>
@@ -91,12 +82,10 @@
                   </xsl:for-each>
                 </td>
 
-                <!-- Description -->
                 <td class="summary">
                   <xsl:value-of select="summary"/>
                 </td>
 
-                <!-- Image -->
                 <td class="image">
                   <img alt="Image" width="200">
                     <xsl:attribute name="src">
@@ -111,7 +100,6 @@
 
         </table>
 
-        <!-- JavaScript logic -->
         <script type="text/javascript"><![CDATA[
 function filterTable() {
   var genre = document.getElementById('genreFilter').value;

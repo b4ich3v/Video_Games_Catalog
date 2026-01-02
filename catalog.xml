@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="catalog.xsl?v=2"?>
-<!--
-  Video game catalog XML document.
 
-  This document defines video games from different genres. The content
-  includes data about genres, companies (developers and publishers) and
-  the games themselves. The images for the games are described via
-  unparsed XML entities; see the declarations in the DOCTYPE. When
-  visualized with XSLT, the unparsed-entity-uri() function is used to
-  obtain the system identifier of the entity and generate a correct SRC
-  attribute for HTML. The document is validated with the XML Schema
-  referenced via xsi:noNamespaceSchemaLocation.
--->
 <!DOCTYPE catalog [
-  <!-- Declarations of unparsed graphic entities (images). -->
   <!ENTITY totk        SYSTEM "images/totk.png"         NDATA png>
   <!ENTITY eldenring   SYSTEM "images/eldenring.png"    NDATA png>
   <!ENTITY doometernal SYSTEM "images/doometernal.png"  NDATA png>
@@ -26,7 +14,6 @@
 <catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="catalog.xsd">
 
-  <!-- List of genres. -->
   <genres>
     <genre id="g1" name="Action-adventure"/>
     <genre id="g2" name="Action RPG"/>
@@ -37,44 +24,34 @@
     <genre id="g7" name="Role-playing"/>
   </genres>
 
-  <!-- List of companies (developers and publishers). -->
   <companies>
-    <!-- Nintendo EPD and Monolith Soft - developers of Tears of the Kingdom -->
     <company name="Nintendo EPD" country="Japan" role="developer"/>
     <company name="Monolith Soft" country="Japan" role="developer"/>
     <company name="Nintendo" country="Japan" role="publisher"/>
 
-    <!-- FromSoftware and Bandai Namco Entertainment -->
     <company name="FromSoftware" country="Japan" role="developer"/>
     <company name="Bandai Namco Entertainment" country="Japan" role="publisher"/>
     <company name="FromSoftware" country="Japan" role="publisher"/>
 
-    <!-- DOOM Eternal -->
     <company name="id Software" country="United States" role="developer"/>
     <company name="Bethesda Softworks" country="United States" role="publisher"/>
 
-    <!-- Minecraft -->
     <company name="Mojang Studios" country="Sweden" role="developer"/>
     <company name="Mojang Studios" country="Sweden" role="publisher"/>
 
-    <!-- Tetris -->
     <company name="Alexey Pajitnov" country="Russia" role="developer"/>
     <company name="Vadim Gerasimov" country="Russia" role="developer"/>
     <company name="The Tetris Company" country="United States" role="publisher"/>
 
-    <!-- The Witcher 3 -->
     <company name="CD Projekt RED" country="Poland" role="developer"/>
     <company name="CD Projekt" country="Poland" role="publisher"/>
 
-    <!-- Super Mario Odyssey -->
     <company name="1-Up Studio" country="Japan" role="developer"/>
 
-    <!-- Larian Studios -->
     <company name="Larian Studios" country="Belgium" role="developer"/>
     <company name="Larian Studios" country="Belgium" role="publisher"/>
   </companies>
 
-  <!-- List of games. -->
   <games>
     <game id="game1" genreId="g1" image="totk" releaseDate="2023-05-12">
       <title>The Legend of Zelda: Tears of the Kingdom</title>

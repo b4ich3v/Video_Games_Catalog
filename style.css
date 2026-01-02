@@ -1,9 +1,3 @@
-/*
-  Basic styles for the video game catalog.
-  Defines fonts, colors, and table layout, as well as
-  styling of filter and search controls.
-*/
-
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
