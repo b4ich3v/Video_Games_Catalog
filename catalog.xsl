@@ -52,13 +52,10 @@
             <xsl:for-each select="games/game">
               <tr data-genre="{@genreId}">
                 
-                <!-- Title -->
                 <td class="title"><xsl:value-of select="title"/></td>
 
-                <!-- Release date -->
                 <td class="date"><xsl:value-of select="@releaseDate"/></td>
 
-                <!-- Genre -->
                 <td class="genre">
                   <xsl:variable name="gid" select="@genreId"/>
                   <xsl:value-of select="../../genres/genre[@id=$gid]/@name"/>
